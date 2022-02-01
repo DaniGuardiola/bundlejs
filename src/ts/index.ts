@@ -200,246 +200,246 @@ export const build = (app: App) => {
     }
 
     // Monaco
-    (async () => {
-        let flexWrapper = document.querySelector(".flex-wrapper") as HTMLElement;
-        let loadingContainerEl = Array.from(
-            document.querySelectorAll(".center-container")
-        );
-        let FadeLoadingScreen = animate({
-            target: loadingContainerEl,
-            opacity: [1, 0],
-            easing: "ease-in",
-            duration: 300,
-            autoplay: false,
-            fillMode: "both",
-        });
+    // (async () => {
+    //     let flexWrapper = document.querySelector(".flex-wrapper") as HTMLElement;
+    //     let loadingContainerEl = Array.from(
+    //         document.querySelectorAll(".center-container")
+    //     );
+    //     let FadeLoadingScreen = animate({
+    //         target: loadingContainerEl,
+    //         opacity: [1, 0],
+    //         easing: "ease-in",
+    //         duration: 300,
+    //         autoplay: false,
+    //         fillMode: "both",
+    //     });
 
-        const { languages } = Monaco;
-        const getShareableURL = async (editor: typeof output) => {
-            try {
-                const model = editor.getModel();
-                const worker = await languages.typescript.getTypeScriptWorker();
-                const thisWorker = await worker(model.uri);
+    //     const { languages } = Monaco;
+    //     const getShareableURL = async (editor: typeof output) => {
+    //         try {
+    //             const model = editor.getModel();
+    //             const worker = await languages.typescript.getTypeScriptWorker();
+    //             const thisWorker = await worker(model.uri);
 
-                // @ts-ignore
-                return await thisWorker.getShareableURL(model.uri.toString());
-            } catch (e) {
-                console.warn(e)
-            }
-        };
+    //             // @ts-ignore
+    //             return await thisWorker.getShareableURL(model.uri.toString());
+    //         } catch (e) {
+    //             console.warn(e)
+    //         }
+    //     };
 
-        const editorBtns = (editor: typeof output, reset: string) => {
-            let el = editor.getDomNode();
-            let parentEl = el?.closest(".app").querySelector(".editor-btns");
-            if (parentEl) {
-                let btnContainer = parentEl.querySelector(".editor-btn-container");
-                let hideBtn = parentEl.querySelector(".hide-btns");
-                let clearBtn = parentEl.querySelector(".clear-btn");
-                let prettierBtn = parentEl.querySelector(".prettier-btn");
-                let resetBtn = parentEl.querySelector(".reset-btn");
-                let copyBtn = parentEl.querySelector(".copy-btn");
-                let codeWrapBtn = parentEl.querySelector(".code-wrap-btn");
-                let editorInfo = parentEl.querySelector(".editor-info");
+    //     const editorBtns = (editor: typeof output, reset: string) => {
+    //         let el = editor.getDomNode();
+    //         let parentEl = el?.closest(".app").querySelector(".editor-btns");
+    //         if (parentEl) {
+    //             let btnContainer = parentEl.querySelector(".editor-btn-container");
+    //             let hideBtn = parentEl.querySelector(".hide-btns");
+    //             let clearBtn = parentEl.querySelector(".clear-btn");
+    //             let prettierBtn = parentEl.querySelector(".prettier-btn");
+    //             let resetBtn = parentEl.querySelector(".reset-btn");
+    //             let copyBtn = parentEl.querySelector(".copy-btn");
+    //             let codeWrapBtn = parentEl.querySelector(".code-wrap-btn");
+    //             let editorInfo = parentEl.querySelector(".editor-info");
 
-                hideBtn.addEventListener("click", () => {
-                    btnContainer.classList.toggle("hide");
-                });
+    //             hideBtn.addEventListener("click", () => {
+    //                 btnContainer.classList.toggle("hide");
+    //             });
 
-                clearBtn.addEventListener("click", () => {
-                    editor.setValue("");
-                });
+    //             clearBtn.addEventListener("click", () => {
+    //                 editor.setValue("");
+    //             });
 
-                prettierBtn.addEventListener("click", () => {
-                    (async () => {
-                        try {
-                            const model = editor.getModel();
-                            const worker = await languages.typescript.getTypeScriptWorker();
-                            const thisWorker = await worker(model.uri);
+    //             prettierBtn.addEventListener("click", () => {
+    //                 (async () => {
+    //                     try {
+    //                         const model = editor.getModel();
+    //                         const worker = await languages.typescript.getTypeScriptWorker();
+    //                         const thisWorker = await worker(model.uri);
 
-                            // @ts-ignore
-                            const formattedCode = await thisWorker.format(model.uri.toString());
-                            editor.setValue(formattedCode);
-                        } catch (e) {
-                            console.warn(e)
-                        }
-                    })();
+    //                         // @ts-ignore
+    //                         const formattedCode = await thisWorker.format(model.uri.toString());
+    //                         editor.setValue(formattedCode);
+    //                     } catch (e) {
+    //                         console.warn(e)
+    //                     }
+    //                 })();
 
-                    editor.getAction("editor.action.formatDocument").run();
-                });
+    //                 editor.getAction("editor.action.formatDocument").run();
+    //             });
 
-                resetBtn.addEventListener("click", () => {
-                    editor.setValue(reset);
-                    if (editor != output) {
-                        isInitial = true;
-                    }
-                });
+    //             resetBtn.addEventListener("click", () => {
+    //                 editor.setValue(reset);
+    //                 if (editor != output) {
+    //                     isInitial = true;
+    //                 }
+    //             });
 
-                copyBtn.addEventListener("click", () => {
-                    const range = editor.getModel().getFullModelRange();
-                    editor.setSelection(range);
-                    editor
-                        .getAction(
-                            "editor.action.clipboardCopyWithSyntaxHighlightingAction"
-                        )
-                        .run();
+    //             copyBtn.addEventListener("click", () => {
+    //                 const range = editor.getModel().getFullModelRange();
+    //                 editor.setSelection(range);
+    //                 editor
+    //                     .getAction(
+    //                         "editor.action.clipboardCopyWithSyntaxHighlightingAction"
+    //                     )
+    //                     .run();
 
-                    (async () => {
-                        await animate({
-                            target: editorInfo,
-                            translateY: [100, "-100%"],
-                            fillMode: "both",
-                            duration: 500,
-                            easing: "ease-out",
-                        });
+    //                 (async () => {
+    //                     await animate({
+    //                         target: editorInfo,
+    //                         translateY: [100, "-100%"],
+    //                         fillMode: "both",
+    //                         duration: 500,
+    //                         easing: "ease-out",
+    //                     });
 
-                        await animate({
-                            target: editorInfo,
-                            translateY: ["-100%", 100],
-                            fillMode: "both",
-                            delay: 1000,
-                        });
-                    })();
-                });
+    //                     await animate({
+    //                         target: editorInfo,
+    //                         translateY: ["-100%", 100],
+    //                         fillMode: "both",
+    //                         delay: 1000,
+    //                     });
+    //                 })();
+    //             });
 
-                codeWrapBtn.addEventListener("click", () => {
-                    let wordWrap: "on" | "off" =
-                        editor.getRawOptions()["wordWrap"] == "on" ? "off" : "on";
-                    editor.updateOptions({ wordWrap });
-                });
-            }
-        };
+    //             codeWrapBtn.addEventListener("click", () => {
+    //                 let wordWrap: "on" | "off" =
+    //                     editor.getRawOptions()["wordWrap"] == "on" ? "off" : "on";
+    //                 editor.updateOptions({ wordWrap });
+    //             });
+    //         }
+    //     };
 
-        // Build the Code Editor
-        [editor, output] = Monaco.build(oldShareURL);
+    //     // Build the Code Editor
+    //     [editor, output] = Monaco.build(oldShareURL);
 
-        FadeLoadingScreen.play(); // Fade away the loading screen
-        await FadeLoadingScreen;
+    //     FadeLoadingScreen.play(); // Fade away the loading screen
+    //     await FadeLoadingScreen;
 
-        [editor.getDomNode(), output.getDomNode()].forEach((el) => {
-            el?.parentElement?.classList.add("show");
-        });
+    //     [editor.getDomNode(), output.getDomNode()].forEach((el) => {
+    //         el?.parentElement?.classList.add("show");
+    //     });
 
-        // Add editor buttons to both editors
-        editorBtns(
-            editor,
-            [
-                '// Click Run for the Bundled, Minified & Gzipped package size',
-                'export * from "@okikio/animate";'
-            ].join("\n")
-        );
-        editorBtns(output, `// Output`);
+    //     // Add editor buttons to both editors
+    //     editorBtns(
+    //         editor,
+    //         [
+    //             '// Click Run for the Bundled, Minified & Gzipped package size',
+    //             'export * from "@okikio/animate";'
+    //         ].join("\n")
+    //     );
+    //     editorBtns(output, `// Output`);
 
-        FadeLoadingScreen.stop();
-        loadingContainerEl.forEach((x) => x?.remove());
+    //     FadeLoadingScreen.stop();
+    //     loadingContainerEl.forEach((x) => x?.remove());
 
-        flexWrapper.classList.add("loaded");
+    //     flexWrapper.classList.add("loaded");
 
-        const allEditorBtns = Array.from(
-            document.querySelectorAll(".editor-btns")
-        );
-        if (allEditorBtns) {
-            allEditorBtns?.[1].classList.add("delay");
-            setTimeout(() => {
-                allEditorBtns?.[1].classList.remove("delay");
-            }, 1600);
-        }
+    //     const allEditorBtns = Array.from(
+    //         document.querySelectorAll(".editor-btns")
+    //     );
+    //     if (allEditorBtns) {
+    //         allEditorBtns?.[1].classList.add("delay");
+    //         setTimeout(() => {
+    //             allEditorBtns?.[1].classList.remove("delay");
+    //         }, 1600);
+    //     }
 
-        BundleEvents.emit("loaded");
+    //     BundleEvents.emit("loaded");
 
-        loadingContainerEl = null;
-        FadeLoadingScreen = null;
+    //     loadingContainerEl = null;
+    //     FadeLoadingScreen = null;
 
-        let el = editor.getDomNode();
-        let parentEl = el?.closest(".app").querySelector(".editor-btns");
-        let inputSizeEl = parentEl.querySelector(".input-file-size") as HTMLDivElement;
-        let calculated = false;
-        const setInputFileSize = () => { 
-            if (parentEl) { 
-                inputSizeEl && (inputSizeEl.textContent = prettyBytes(encode(editor.getValue()).byteLength));
-                calculated = true;
-            }
-        }
+    //     let el = editor.getDomNode();
+    //     let parentEl = el?.closest(".app").querySelector(".editor-btns");
+    //     let inputSizeEl = parentEl.querySelector(".input-file-size") as HTMLDivElement;
+    //     let calculated = false;
+    //     const setInputFileSize = () => { 
+    //         if (parentEl) { 
+    //             inputSizeEl && (inputSizeEl.textContent = prettyBytes(encode(editor.getValue()).byteLength));
+    //             calculated = true;
+    //         }
+    //     }
 
-        setInputFileSize();
-        editor.onDidChangeModelContent(
-            debounce((e) => {
-                if (parentEl && calculated) { 
-                    inputSizeEl && (inputSizeEl.innerHTML = `<div class="loading"></div>`);
-                    calculated = false;
-                }
-            }, 100)
-        );
+    //     setInputFileSize();
+    //     editor.onDidChangeModelContent(
+    //         debounce((e) => {
+    //             if (parentEl && calculated) { 
+    //                 inputSizeEl && (inputSizeEl.innerHTML = `<div class="loading"></div>`);
+    //                 calculated = false;
+    //             }
+    //         }, 100)
+    //     );
         
-        editor.onDidChangeModelContent(
-            debounce((e) => {
-                setInputFileSize();
-            }, 500)
-        );
+    //     editor.onDidChangeModelContent(
+    //         debounce((e) => {
+    //             setInputFileSize();
+    //         }, 500)
+    //     );
                 
-        editor.onDidChangeModelContent(
-            debounce((e) => {
-                (async () => {
-                    replaceState(await getShareableURL(editor));
-                    isInitial = false;
-                })();
-            }, 1000)
-        );
+    //     editor.onDidChangeModelContent(
+    //         debounce((e) => {
+    //             (async () => {
+    //                 replaceState(await getShareableURL(editor));
+    //                 isInitial = false;
+    //             })();
+    //         }, 1000)
+    //     );
 
-        const shareBtn = document.querySelector(
-            ".btn-share#share"
-        ) as HTMLButtonElement;
-        const shareInput = document.querySelector(
-            "#copy-input"
-        ) as HTMLInputElement;
-        shareBtn?.addEventListener("click", () => {
-            (async () => {
-                try {
-                    if (navigator.share) {
-                        let shareBtnValue = shareBtn.innerText;
-                        isInitial = false;
-                        await navigator.share({
-                            title: 'bundle',
-                            text: '',
-                            url: await getShareableURL(editor),
-                        });
+    //     const shareBtn = document.querySelector(
+    //         ".btn-share#share"
+    //     ) as HTMLButtonElement;
+    //     const shareInput = document.querySelector(
+    //         "#copy-input"
+    //     ) as HTMLInputElement;
+    //     shareBtn?.addEventListener("click", () => {
+    //         (async () => {
+    //             try {
+    //                 if (navigator.share) {
+    //                     let shareBtnValue = shareBtn.innerText;
+    //                     isInitial = false;
+    //                     await navigator.share({
+    //                         title: 'bundle',
+    //                         text: '',
+    //                         url: await getShareableURL(editor),
+    //                     });
 
-                        shareBtn.innerText = "Shared!";
-                        setTimeout(() => {
-                            shareBtn.innerText = shareBtnValue;
-                        }, 600);
-                    } else {
-                        shareInput.value = await getShareableURL(editor);
-                        shareInput.select();
-                        document.execCommand("copy");
+    //                     shareBtn.innerText = "Shared!";
+    //                     setTimeout(() => {
+    //                         shareBtn.innerText = shareBtnValue;
+    //                     }, 600);
+    //                 } else {
+    //                     shareInput.value = await getShareableURL(editor);
+    //                     shareInput.select();
+    //                     document.execCommand("copy");
 
-                        let shareBtnValue = shareBtn.innerText;
+    //                     let shareBtnValue = shareBtn.innerText;
 
-                        shareBtn.innerText = "Copied!";
-                        setTimeout(() => {
-                            shareBtn.innerText = shareBtnValue;
-                        }, 600);
-                    }
-                } catch (error) {
-                    console.log('Error sharing', error);
-                }
-            })();
-        });
+    //                     shareBtn.innerText = "Copied!";
+    //                     setTimeout(() => {
+    //                         shareBtn.innerText = shareBtnValue;
+    //                     }, 600);
+    //                 }
+    //             } catch (error) {
+    //                 console.log('Error sharing', error);
+    //             }
+    //         })();
+    //     });
 
-        // Listen to events for the results
-        ResultEvents.on("add-module", (v) => {
-            value = isInitial ? "// Click Run for the Bundled + Minified + Gzipped package size" : `` + editor?.getValue();
-            editor.setValue((value + "\n" + v).trim());
-        });
+    //     // Listen to events for the results
+    //     ResultEvents.on("add-module", (v) => {
+    //         value = isInitial ? "// Click Run for the Bundled + Minified + Gzipped package size" : `` + editor?.getValue();
+    //         editor.setValue((value + "\n" + v).trim());
+    //     });
 
-        RunBtn.addEventListener("click", () => {
-            (async () => {
-                if (!initialized)
-                    fileSizeEl.textContent = `Wait...`;
-                BundleEvents.emit("bundle");
-                pushState(await getShareableURL(editor));
-            })();
-        });
-    })();
+    //     RunBtn.addEventListener("click", () => {
+    //         (async () => {
+    //             if (!initialized)
+    //                 fileSizeEl.textContent = `Wait...`;
+    //             BundleEvents.emit("bundle");
+    //             pushState(await getShareableURL(editor));
+    //         })();
+    //     });
+    // })();
 };
 
 // To speed up rendering, delay Monaco on the main page, only load none critical code
