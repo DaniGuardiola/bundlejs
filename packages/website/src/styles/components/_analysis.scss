@@ -1,4 +1,5 @@
 .analysis-section {
+  @apply min-h-[50px] h-full;
   @apply self-center;
 
   [custom-handle] {

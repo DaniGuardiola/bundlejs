@@ -1,10 +1,11 @@
-import type { ComponentProps, JSX } from "solid-js";
+import type { Component, ComponentProps, JSX } from "solid-js";
 import { onCleanup, onMount } from "solid-js";
 
 import Container from "../Container";
 import SearchContainer from "./SearchSection/SearchContainer";
 import EditorSection from "./EditorSection/EditorSection";
 import Analysis from "./Analysis";
+import DragHandle from "./EditorSection/DragHandle";
 
 export const KEYCODE = {
   LEFT: "ArrowLeft",
@@ -41,16 +42,16 @@ export function MainSection(props?: ComponentProps<'div'>) {
   });
 
   return (
-    <Container max="lg" ref={ref}>
-      <Container class="px-none">
+    <Container class="col h-full" max="full" ref={ref}>
+      {/* <Container class="px-none">
         <SearchContainer onKeyUp={onKeyUp} />
-      </Container>
-  
-      <EditorSection ref={editorRef} /> 
-  
-      <Container class="lt-md:px-none pb-4">
-        <Analysis>{props.children}</Analysis>
-      </Container>
+      </Container> */}
+
+      <EditorSection ref={editorRef} />
+
+      <DragHandle drag-height direction="y" constrain={true} />
+
+      <Analysis />
     </Container>
   );
 }

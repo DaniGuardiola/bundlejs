@@ -7,7 +7,14 @@
 
   @apply relative w-full;
   @apply min-w-[200px];
-  @apply min-h-[100px] h-[200px];
+  @apply h-[200px];
+
+  min-height: 100px;
+
+  @screen sm {
+    min-width: 15.5rem;
+    min-height: 300px;
+  }
   
   @screen sm {
     @apply min-h-[300px];

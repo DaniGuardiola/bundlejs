@@ -27,8 +27,6 @@ const content = Astro?.props?.content ?? Astro?.props;
     <slot />
   </main>
 
-  <Footer />
-
   <Toaster 
     client:only="solid" 
     position="bottom-right"

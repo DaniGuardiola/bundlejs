@@ -8,8 +8,11 @@
 @import "./console-btns";
 
 .editor-section {
-  @apply grid pb-5 gap-3;
+  @apply grid gap-3;
   @apply relative w-full;
+  @apply h-full;
+  max-height: calc(100% - 50px);
+
   grid-template:
     "tabs activity"
     "core core"
@@ -30,8 +33,7 @@
 
     grid-area: core; 
     min-width: 0;
-
-    height: 300px;
-    min-height: 300px;
+    @apply min-h-[200px];
+    @apply h-full;
   }
 }

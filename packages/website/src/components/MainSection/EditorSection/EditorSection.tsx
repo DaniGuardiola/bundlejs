@@ -1,4 +1,4 @@
-import type { ComponentProps } from "solid-js";
+import type { Component, ComponentProps } from "solid-js";
 import { createSignal, onCleanup, onMount } from "solid-js";
 
 import DragHandle from "./DragHandle";
@@ -27,7 +27,7 @@ export function EditorSection(props?: ComponentProps<"div">) {
   });
 
   return (
-    <div class="contain px-none lg editor-section" {...props}>
+    <div class="px-none editor-section" {...props}>
       <Tabs />
       <Activity />
 
@@ -36,8 +36,6 @@ export function EditorSection(props?: ComponentProps<"div">) {
         <DragHandle direction={direction()} constrain={direction() == "x"} />
         <Console />
       </div>
-
-      <DragHandle drag-height direction="y" />
     </div>
   );
 }

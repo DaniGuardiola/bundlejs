@@ -7,30 +7,65 @@ import MainSection from '../components/MainSection/MainSection';
 import IntroHeader from "../components/IntroHeader.astro";
 
 import { default as Docs } from "../components/DocsSection/Docs.mdx";
-import { default as Content } from "../snippets/analysis.md";
 import SearchContainer from '../components/MainSection/SearchSection/SearchContainer';
 import EditorSection from '../components/MainSection/EditorSection/EditorSection';
 import Analysis from '../components/MainSection/Analysis';
+import DragHandle from '../components/MainSection/EditorSection/DragHandle';
+import Footer from '../components/Footer.astro';
 ---
 
 <BaseLayout>
-  <Container>
-    <IntroHeader 
-      title="bundlejs" 
-      subtitle="A quick and easy way to bundle, minify, and compress your ts, js, jsx and npm packages, while viewing the file size of the final bundle." 
-      mobile="Quickly bundle js & view the file size."
-    />
-  </Container>
+  <div class="parent-grid">
+    <div class="grid-content">
+      <div class="grid-editor">
+        <MainSection client:load />
+      </div>
+    </div>
 
-  <MainSection client:load>
-    <Content />
-  </MainSection>
-
-  <Container>
-    <Docs />
-  </Container> 
+    <DragHandle client:load class="grid-handle" direction={"x"} />
+    
+    <div class="grid-docs">
+      <Container class="col">
+        <IntroHeader 
+          title="bundlejs" 
+          subtitle="A quick and easy way to bundle, minify, and compress your ts, js, jsx and npm packages, while viewing the file size of the final bundle." 
+          mobile="Quickly bundle js & view the file size."
+        />
+        <SearchContainer client:only onKeyUp={() => {}}/>
+        <Docs />
+        <Footer />
+      </Container> 
+    </div>
+  </div>
 </BaseLayout>
 
 <script>
   import "../scripts/index";
 </script>
+
+<style lang="scss">
+  .parent-grid {
+    @apply flex;
+    @apply relative w-full;
+    
+    .grid-content {
+      @apply relative;
+      @apply w-full;
+
+      min-width: 200px;
+
+      .grid-editor {
+        @apply sticky top-[var(--navbar-height)];
+        height: calc(100dvh - var(--navbar-height));
+      }
+    }
+
+    .grid-docs {
+      @apply relative;
+      @apply w-full;
+
+      min-width: 200px;
+      max-width: 400px;
+    }
+  }
+</style>

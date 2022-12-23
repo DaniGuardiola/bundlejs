@@ -1,6 +1,8 @@
 .drag-handle {  
   @apply flex items-center justify-center;
   @apply text-secondary dark:text-primary;
+  flex-basis: 20px;
+  flex-shrink: 1;
   @apply cursor-grab;
   touch-action: none;
 

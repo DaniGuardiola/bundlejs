@@ -35,7 +35,8 @@ export function DragHandle(props?: ComponentProps<"button"> & {
   function drag (e: MouseEvent) {
     // How far the mouse has been moved
     const diff = e[mouseDir()] - position;
-    const newSize = props?.constrain ? (size + diff) * 100 / parentSize : size + diff;
+    const change = size + diff;
+    const newSize = props?.constrain ? (change * 100) / parentSize : change;
     const unit = props?.constrain ? "%" : "px";
 
     targetEl.style[sizeProp()] = `${newSize}${unit}`;

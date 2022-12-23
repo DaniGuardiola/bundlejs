@@ -25,4 +25,8 @@
   &.xl {
     @apply max-w-screen-xl;
   }
+
+  &.full {
+    @apply max-w-full;
+  }
 }
