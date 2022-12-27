@@ -145,6 +145,7 @@ importers:
       '@okikio/emitter': ^2.1.7
       '@okikio/native': ^3.0.1
       '@okikio/sharedworker': ^1.0.4
+      '@tailwindcss/container-queries': ^0.1.0
       '@types/offscreencanvas': ^2019.7.0
       '@typescript/lib-dom': npm:@types/web@^0.0.86
       '@typescript/vfs': ^1.4.0
@@ -195,6 +196,7 @@ importers:
       '@astrojs/tailwind': 2.1.3_tailwindcss@3.2.4
       '@babel/core': 7.20.7
       '@iconify/json': 2.1.155
+      '@tailwindcss/container-queries': 0.1.0_tailwindcss@3.2.4
       '@types/offscreencanvas': 2019.7.0
       '@typescript/lib-dom': /@types/web/0.0.86
       astro: 1.7.2_sass@1.57.1
@@ -2559,6 +2561,14 @@ packages:
       json5: 2.2.2
       magic-string: 0.25.9
       string.prototype.matchall: 4.0.8
+    dev: true
+
+  /@tailwindcss/container-queries/0.1.0_tailwindcss@3.2.4:
+    resolution: {integrity: sha512-t1GeJ9P8ual160BvKy6Y1sG7bjChArMaK6iRXm3ZYjZGN2FTzmqb5ztsTDb9AsTSJD4NMHtsnaI2ielrXEk+hw==}
+    peerDependencies:
+      tailwindcss: '>=3.2.0'
+    dependencies:
+      tailwindcss: 3.2.4_postcss@8.4.20
     dev: true
 
   /@tootallnate/once/2.0.0:
@@ -9695,7 +9705,7 @@ packages:
       vite:
         optional: true
     dependencies:
-      vite: 4.0.3_@types+node@18.11.17
+      vite: 4.0.3_sass@1.57.1
     dev: true
 
   /vitest/0.26.2:

@@ -16,13 +16,18 @@ import Footer from '../components/Footer.astro';
 
 <BaseLayout>
   <div class="parent-grid">
-    <div class="grid-content">
+    <div class="grid-content @container">
       <div class="grid-editor">
         <MainSection client:load />
       </div>
     </div>
 
-    <DragHandle client:load class="grid-handle" direction={"x"} />
+    <div class="grid-handle">
+      <DragHandle
+        client:load
+        direction={"x"}
+      />
+    </div>
     
     <div class="grid-docs">
       <Container class="col">
@@ -50,22 +55,30 @@ import Footer from '../components/Footer.astro';
     
     .grid-content {
       @apply relative;
-      @apply w-full;
-
-      min-width: 200px;
+      @apply w-3/4;
 
       .grid-editor {
         @apply sticky top-[var(--navbar-height)];
         height: calc(100dvh - var(--navbar-height));
+        @apply flex;
+      }
+    }
+
+    .grid-handle {
+      @apply relative;
+      @apply flex-grow-0;
+
+      :global(.drag-handle) {
+        @apply sticky top-[var(--navbar-height)];
+        height: calc(100dvh - var(--navbar-height));
+        @apply flex; 
       }
     }
 
     .grid-docs {
       @apply relative;
-      @apply w-full;
 
       min-width: 200px;
-      max-width: 400px;
     }
   }
 </style>

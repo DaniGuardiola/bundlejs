@@ -31,23 +31,24 @@ export function MainSection(props?: ComponentProps<'div'>) {
     }
   }
 
-  onMount(() => {
-    searchEl = ref.querySelector('dialog') as unknown as (HTMLDialogElement & { open?: boolean });
-    tabBarEl = editorRef.querySelector(".tab-bar button");
-  });
+  // onMount(() => {
+  //   searchEl = ref.querySelector('dialog') as unknown as (HTMLDialogElement & { open?: boolean });
+  //   tabBarEl = editorRef.querySelector(".tab-bar button");
+  // });
 
-  onCleanup(() => {
-    searchEl = null;
-    tabBarEl = null;
-  });
+  // onCleanup(() => {
+  //   searchEl = null;
+  //   tabBarEl = null;
+  // });
 
   return (
     <Container class="col h-full" max="full" ref={ref}>
       {/* <Container class="px-none">
-        <SearchContainer onKeyUp={onKeyUp} />
-      </Container> */}
+      <SearchContainer onKeyUp={onKeyUp} />
+    </Container> */}
 
-      <EditorSection ref={editorRef} />
+      {/* <EditorSection ref={editorRef} /> */}
+      <div class="bg-blue-300 h-[50%]"></div>
 
       <DragHandle drag-height direction="y" constrain={true} />
 

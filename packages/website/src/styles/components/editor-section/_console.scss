@@ -6,11 +6,9 @@
   @apply rounded-lg;
   @apply flex flex-col flex-grow;
 
-  min-height: 100px;
 
   @screen sm {
     min-width: 15.5rem;
-    min-height: 300px;
   }
 
   .console-head {

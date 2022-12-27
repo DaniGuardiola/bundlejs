@@ -8,19 +8,12 @@
   @apply relative w-full;
   @apply min-w-[200px];
   @apply h-[200px];
-
-  min-height: 100px;
+    @apply flex-grow;
 
   @screen sm {
     min-width: 15.5rem;
-    min-height: 300px;
   }
   
-  @screen sm {
-    @apply min-h-[300px];
-    @apply h-full; 
-  }
-
   &,
   [custom-loading] {
     @apply rounded-lg;

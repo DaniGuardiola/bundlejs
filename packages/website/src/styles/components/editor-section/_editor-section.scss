@@ -10,21 +10,14 @@
 .editor-section {
   @apply grid gap-3;
   @apply relative w-full;
-  @apply h-full;
-  max-height: calc(100% - 50px);
+  --max-height: 100%;
+  min-height: 300px;
+  height: calc(var(--max-height)*0.6);
+  max-height: calc(var(--max-height) - 50px);
 
   grid-template:
-    "tabs activity"
-    "core core"
-    "handle handle"; 
-
-  @screen lt-sm {
-    grid-template:
-      "tabs"
-      "core"
-      "handle"
-      "activity";
-  }
+    "tabs activity" auto
+    "core core" 2fr; 
 
   .core {
     @apply relative;
@@ -33,7 +26,15 @@
 
     grid-area: core; 
     min-width: 0;
-    @apply min-h-[200px];
     @apply h-full;
+  }
+}
+
+@container (min-width: 700px) {
+  .editor-section {
+  grid-template:
+    "tabs"
+    "core"
+    "activity";
   }
 }

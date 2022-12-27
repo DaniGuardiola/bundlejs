@@ -24,7 +24,7 @@ export function DragHandle(props?: ComponentProps<"button"> & {
   let size = 0;
 
   // Size of parent element
-  let parentSize = 0;
+  const [parentSize, setParentSize] = createSignal(0);
 
   const [dirIsX, setDirIsX] = createSignal(props?.direction == "x");
 
@@ -36,10 +36,11 @@ export function DragHandle(props?: ComponentProps<"button"> & {
     // How far the mouse has been moved
     const diff = e[mouseDir()] - position;
     const change = size + diff;
-    const newSize = props?.constrain ? (change * 100) / parentSize : change;
-    const unit = props?.constrain ? "%" : "px";
+    const newSize = props?.constrain ? change / parentSize() : change;
 
-    targetEl.style[sizeProp()] = `${newSize}${unit}`;
+    targetEl.style[sizeProp()] = props?.constrain
+      ? `calc(var(--max-${sizeProp()}) * ${newSize})` 
+      : `${newSize}px`;
     document.body.style.cursor = cursorProp();
 
     targetEl.style.userSelect = "none";
@@ -62,8 +63,16 @@ export function DragHandle(props?: ComponentProps<"button"> & {
   }
 
   onMount(() => {
-    targetEl = (ref?.previousElementSibling ?? ref?.parentElement?.previousElementSibling) as HTMLElement;
+    let prevSibling = ref?.previousElementSibling as HTMLElement;
+    let parent = ref?.parentElement;
+    while (!prevSibling && parent) {
+      parent = parent?.parentElement;
+      prevSibling ??= parent?.previousElementSibling as HTMLElement;
+    }
+    
+    targetEl = prevSibling;
     parentEl = targetEl?.parentElement as HTMLElement;
+    setParentSize(parentEl.getBoundingClientRect()[sizeProp()]);
   });
 
   createEffect(() => { 
@@ -78,11 +87,15 @@ export function DragHandle(props?: ComponentProps<"button"> & {
     if (props?.constrain && !observer) {
       observer = new ResizeObserver(
         debounce(() => {
-          parentSize = parentEl.getBoundingClientRect()[sizeProp()];
+          setParentSize(parentEl.getBoundingClientRect()[sizeProp()]);
         }, 50)
       );
     }
   });
+
+  createEffect(() => {
+    targetEl.style.setProperty(`--max-${sizeProp()}`, `${parentSize()}px`);
+  })
 
   onCleanup(() => { 
     newProps.ref = ref = null;
@@ -102,7 +115,7 @@ export function DragHandle(props?: ComponentProps<"button"> & {
     // Get the current mouse position
     position = e[mouseDir()];
     size = targetEl.getBoundingClientRect()[sizeProp()];
-    parentSize = parentEl.getBoundingClientRect()[sizeProp()];
+    setParentSize(parentEl.getBoundingClientRect()[sizeProp()]);
 
     // Attach the listeners to `document`
     document.addEventListener("pointermove", drag);

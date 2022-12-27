@@ -1,5 +1,5 @@
 .drag-handle {  
-  @apply flex items-center justify-center;
+  @apply flex;
   @apply text-secondary dark:text-primary;
   flex-basis: 20px;
   flex-shrink: 1;
@@ -10,6 +10,22 @@
 
   @at-root .dom-loaded & svg[astro-icon] {
     @apply transition duration-200 ease-out;
+  }
+  
+  svg[astro-icon] {
+    @apply sticky;
+  }
+
+  &:not([sticky]) {
+    @apply items-center justify-center;
+  }
+
+  &[sticky][direction="x"] svg[astro-icon] {
+    @apply top-1/2 -translate-y-1/2;
+  }
+
+  &[sticky][direction="y"] svg[astro-icon] {
+    @apply left-1/2 -translate-x-1/2;
   }
 
   &:hover svg[astro-icon] {
@@ -27,9 +43,5 @@
     &[direction="x"] {
       @apply cursor-col-resize;
     }
-  }
-
-  &[drag-height] {
-    grid-area: handle;
   }
 }

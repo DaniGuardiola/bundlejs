@@ -1,5 +1,5 @@
 .analysis-section {
-  @apply min-h-[50px] h-full;
+  @apply min-h-[50px] flex-grow;
   @apply self-center;
 
   [custom-handle] {
