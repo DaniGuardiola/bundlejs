@@ -16,6 +16,7 @@ export default {
 		try {
 			const reqUrl = new URL(request.url);
 			const url = new URL(reqUrl.pathname, "https://bundlejs.deno.dev");
+			console.log(url.href)
 
 			const initialValue = parseShareURLQuery(url) || inputModelResetValue;
 			const { init: _, entryPoints: _2, ascii: _3, ...initialConfig } = parseConfig(url) || {};
@@ -33,31 +34,34 @@ export default {
 					worker: false
 				},
 			} as BuildConfig);
+			console.log(configObj)
 
-			const _key = JSON.stringify({ ...(configObj as object), initialValue: initialValue.trim() });
+			const fileResult = url.searchParams.has("file");
+			const badgeResult = url.searchParams.has("badge");
+			const _key = JSON.stringify({ 
+				...(configObj as object), 
+				initialValue: initialValue.trim(), 
+				badge: badgeResult,
+				file: fileResult,
+			});
 			const result = await env.KV.get<{ type: string, value: string }>(_key, { type: "json" });
 			if (result) {
-				if (url.pathname === "/no-cache") {
+				if (url.pathname === "/delete-cache") {
 					await env.KV.delete(_key);
-					return new Response("Cleared cache!");
+					return new Response("Deleted from cache!");
 				}
 
 				return new Response(result.value, {
 					status: 200,
 					headers: [
-						['Cache-Control', 'max-age=8640, s-maxage=86400, public'],
 						['Content-Type', result.type]
 					],
 				})
 			}
-
 			const response = await fetch(url, {
-				credentials: "omit",
-				headers: {
-					'Access-Control-Allow-Origin': '*',
-					'Access-Control-Allow-Methods': 'GET,HEAD,POST,OPTIONS',
-					'Access-Control-Max-Age': '86400',
-				}
+				// credentials: "omit",
+				// redirect: "follow",
+				// mode: "no-cors"
 			});
 			const contentType = response.headers.get("Content-Type");
 			const value = await response.text(); 
@@ -69,7 +73,6 @@ export default {
 			return new Response(value, {
 				status: 200,
 				headers: [
-					['Cache-Control', 'max-age=8640, s-maxage=86400, public'],
 					['Content-Type', contentType!]
 				],
 			})
