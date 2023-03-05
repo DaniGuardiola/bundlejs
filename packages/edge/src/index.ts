@@ -47,7 +47,11 @@ export default {
 			const result = await env.KV.get<{ type: string, value: string }>(_key, { type: "json" });
 			if (result) {
 				if (url.pathname === "/delete-cache") {
-					await env.KV.delete(_key);
+					try {
+						await env.KV.delete(_key);
+					} catch (e) {
+						console.warn(e);
+					}
 					return new Response("Deleted from cache!");
 				}
 
