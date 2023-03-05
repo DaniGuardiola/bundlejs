@@ -1,4 +1,5 @@
-import { deepAssign, lzstring } from "@bundlejs/core";
+import * as lzstring from "@bundlejs/core/src/utils/lz-string.ts";
+import { deepAssign } from "@bundlejs/core/src/utils/deep-equal.ts";
 
 const { decompressFromURL } = lzstring;
 

@@ -18,28 +18,26 @@ const version = dependencies["esbuild-wasm"].replaceAll(/[^0-9.-]/g, "");
  * @param platform Which platform skew of esbuild should be used
  * @returns esbuild module
  */
-import * as DenoEsbuild from "https://deno.land/x/esbuild@v0.17.11/wasm.js";
 export async function getEsbuild(platform: Platform = PLATFORM_AUTO): Promise<typeof ESBUILD> {
   try {
-    return DenoEsbuild;
-    // switch (platform) {
-    //   case "deno":
-    //     return await import(
-    //       /* @vite-ignore */
-    //       `https://deno.land/x/esbuild@v${version}/mod.js`
-    //     );
-    //   case "deno-wasm":
-    //     return await import(
-    //       /* @vite-ignore */
-    //       `https://deno.land/x/esbuild@v${version}/wasm.js`
-    //     );
-    //   case "node":
-    //     return await import("esbuild");
-    //   case "browser":
-    //   case "edge":
-    //   default:
-    //     return await import("esbuild-wasm");
-    // }
+    switch (platform) {
+      case "deno":
+        return await import(
+          /* @vite-ignore */
+          `https://deno.land/x/esbuild@v${version}/mod.js`
+        );
+      case "deno-wasm":
+        return await import(
+          /* @vite-ignore */
+          `https://deno.land/x/esbuild@v${version}/wasm.js`
+        );
+      case "node":
+        return await import("esbuild");
+      case "browser":
+      case "edge":
+      default:
+        return await import("esbuild-wasm");
+    }
   } catch (e) {
     throw e;
   }
