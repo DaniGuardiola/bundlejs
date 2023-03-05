@@ -15,7 +15,7 @@ export default {
 	): Promise<Response> {
 		try {
 			const reqUrl = new URL(request.url);
-			const url = new URL(reqUrl.pathname, "https://deno.bundlejs.com");
+			const url = new URL(reqUrl.pathname, "https://bundlejs.deno.dev");
 
 			const initialValue = parseShareURLQuery(url) || inputModelResetValue;
 			const { init: _, entryPoints: _2, ascii: _3, ...initialConfig } = parseConfig(url) || {};
@@ -52,7 +52,12 @@ export default {
 			}
 
 			const response = await fetch(url, {
-				mode: 'no-cors'
+				credentials: "omit",
+				headers: {
+					'Access-Control-Allow-Origin': '*',
+					'Access-Control-Allow-Methods': 'GET,HEAD,POST,OPTIONS',
+					'Access-Control-Max-Age': '86400',
+				}
 			});
 			const contentType = response.headers.get("Content-Type");
 			const value = await response.text(); 
