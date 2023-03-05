@@ -10,13 +10,15 @@ const inputModelResetValue = [
 export default {
 	async fetch(
 		request: Request,
-		env: Env,
-		ctx: ExecutionContext
+		env: Env
 	): Promise<Response> {
 		try {
-			const reqUrl = new URL(request.url);
-			const url = new URL(reqUrl.pathname, "https://bundlejs.deno.dev");
-			console.log(url.href)
+			const url = new URL(request.url);			
+			url.hostname = "bundlejs.deno.dev";
+			console.log({ 
+				reqUrl: request.url,
+				href: url.href
+			})
 
 			const initialValue = parseShareURLQuery(url) || inputModelResetValue;
 			const { init: _, entryPoints: _2, ascii: _3, ...initialConfig } = parseConfig(url) || {};
