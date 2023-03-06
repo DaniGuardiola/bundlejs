@@ -22,32 +22,39 @@ export default {
 
 			const initialValue = parseShareURLQuery(url) || inputModelResetValue;
 			const { init: _, entryPoints: _2, ascii: _3, ...initialConfig } = parseConfig(url) || {};
+
+			const metafileQuery = url.searchParams.has("metafile");
+			const analysisQuery = url.searchParams.has("analysis");
+
+			const fileQuery = url.searchParams.has("file");
+			const badgeQuery = url.searchParams.has("badge");
+
+			const polyfill = url.searchParams.has("polyfill");
+
+			const enableMetafile = analysisQuery ||
+				metafileQuery ||
+				Boolean(initialConfig?.analysis);
 			
-			const configObj: BuildConfig & CompressConfig = deepAssign({}, initialConfig, {
+			const configObj: BuildConfig & CompressConfig = deepAssign({ polyfill }, initialConfig, {
 				entryPoints: ["/index.tsx"],
-				esbuild: {
-					treeShaking: true,
-					metafile: url.searchParams.has("analysis") ||
-						url.searchParams.has("metafile") ||
-						Boolean(initialConfig?.analysis)
-				},
+				esbuild: enableMetafile ? {
+					metafile: enableMetafile
+				} : {},
 				init: {
-					platform: "browser",
+					platform: "deno-wasm",
 					worker: false
 				},
 			} as BuildConfig);
 			console.log(configObj)
 
-			const fileResult = url.searchParams.has("file");
-			const badgeResult = url.searchParams.has("badge");
+			const fileResult = url.searchParams.get("file");
+			const badgeResult = url.searchParams.get("badge");
 			const _key = JSON.stringify({ 
 				...(configObj as object), 
 				initialValue: initialValue.trim(), 
 				badge: badgeResult,
-				file: fileResult,
+				file: fileResult
 			});
-
-
 
 			const headers = Object.entries({
 				"Access-Control-Allow-Origin": "*",
