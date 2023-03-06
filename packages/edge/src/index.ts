@@ -57,7 +57,7 @@ export default {
 				return new Response(result.value, {
 					status: 200,
 					headers: [
-						['Cache-Control', 'max-age=30, s-maxage=30, public'],
+						// ['Cache-Control', 'max-age=30, s-maxage=30, public'],
 						['Content-Type', result.type]
 					],
 				})
