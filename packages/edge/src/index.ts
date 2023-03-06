@@ -1,11 +1,30 @@
-import { BuildConfig, CompressConfig, createConfig } from "@bundlejs/core/src/index.ts";
+import type { BuildConfig, CompressConfig, CompressionOptions } from "@bundlejs/core/src/index.ts";
 import { deepAssign } from "@bundlejs/core/src/utils/deep-equal.ts";
 
 import { parseShareURLQuery, parseConfig } from "./_parse-query.ts";
 
+const timeFormatter = new Intl.RelativeTimeFormat("en", {
+	style: "narrow",
+	numeric: "auto",
+});
+
 const inputModelResetValue = [
 	'export * from "@okikio/animate";'
 ].join("\n");
+
+/**
+ * Default compress config
+ */
+export const COMPRESS_CONFIG: CompressionOptions = {
+	type: "gzip",
+	quality: 9
+}; 
+
+export function createConfig<T extends "compress", O extends CompressConfig>(type: T, opts?: O) {
+	if (type == "compress") {
+		return deepAssign({}, COMPRESS_CONFIG, typeof opts == "string" ? { type: opts } : opts) as CompressionOptions;
+	}
+}
 
 export default {
 	async fetch(
@@ -22,6 +41,8 @@ export default {
 				await Promise.allSettled(keys.map(({ name }) => {
 					return env.KV.delete(name)
 				}))
+
+				return new Response("Cleared entire cache...careful now.")
 			}
 
 			if (url.pathname === "/favicon.ico") 
@@ -70,6 +91,7 @@ export default {
 				"Access-Control-Allow-Origin": "*",
 				"Access-Control-Allow-Methods": "GET"
 			})
+			let start = Date.now();
 			const result = await env.KV.get<{ type: string, value: string }>(_key, { type: "json" });
 			if (result && url.pathname !== "/no-cache") {
 				if (url.pathname === "/delete-cache") {
@@ -81,15 +103,24 @@ export default {
 					return new Response("Deleted from cache!");
 				}
 
-				return new Response(result.value, {
-					status: 200,
-					headers: [
-						...headers,
-						// ['Cache-Control', 'max-age=30, s-maxage=30, public'],
-						['Content-Type', result.type]
-					],
-				})
+				const duration = Date.now() - start;
+				return new Response(
+					result.type?.includes("json") ? JSON.stringify({
+						...JSON.parse(result.value),
+						time: timeFormatter.format(duration / 1000, "seconds"),
+						rawTime: duration
+					}) : result.value, 
+					{
+						status: 200,
+						headers: [
+							...headers,
+							// ['Cache-Control', 'max-age=30, s-maxage=30, public'],
+							['Content-Type', result.type]
+						],
+					}
+				)
 			}
+
 			const response = await fetch(url, {
 				// credentials: "omit",
 				// redirect: "follow",
