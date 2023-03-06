@@ -17,6 +17,9 @@ export default {
 			url.hostname = "bundlejs.deno.dev";
 			console.log(url.href)
 
+			if (url.pathname === "/favicon.ico") 
+				return Response.redirect("https://bundlejs.com/favicon/favicon.ico");
+
 			const initialValue = parseShareURLQuery(url) || inputModelResetValue;
 			const { init: _, entryPoints: _2, ascii: _3, ...initialConfig } = parseConfig(url) || {};
 			
@@ -67,6 +70,19 @@ export default {
 				// redirect: "follow",
 				// mode: "no-cors"
 			});
+			console.log({
+				ok: response.ok
+			})
+			if (!response.ok) {
+				const headers = response.headers;
+				const status = response.status;
+				// @ts-ignore
+				return new Response(await response.arrayBuffer(), {
+					headers,
+					status
+				});
+			}
+
 			const contentType = response.headers.get("Content-Type");
 			const value = await response.text(); 
 
