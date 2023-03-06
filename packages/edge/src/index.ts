@@ -15,10 +15,7 @@ export default {
 		try {
 			const url = new URL(request.url);			
 			url.hostname = "bundlejs.deno.dev";
-			console.log({ 
-				reqUrl: request.url,
-				href: url.href
-			})
+			console.log(url.href)
 
 			const initialValue = parseShareURLQuery(url) || inputModelResetValue;
 			const { init: _, entryPoints: _2, ascii: _3, ...initialConfig } = parseConfig(url) || {};
@@ -47,7 +44,7 @@ export default {
 				file: fileResult,
 			});
 			const result = await env.KV.get<{ type: string, value: string }>(_key, { type: "json" });
-			if (result) {
+			if (result && url.pathname !== "/no-cache") {
 				if (url.pathname === "/delete-cache") {
 					try {
 						await env.KV.delete(_key);
