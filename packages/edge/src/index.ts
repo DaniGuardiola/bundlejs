@@ -46,6 +46,13 @@ export default {
 				badge: badgeResult,
 				file: fileResult,
 			});
+
+
+
+			const headers = Object.entries({
+				"Access-Control-Allow-Origin": "*",
+				"Access-Control-Allow-Methods": "GET"
+			})
 			const result = await env.KV.get<{ type: string, value: string }>(_key, { type: "json" });
 			if (result && url.pathname !== "/no-cache") {
 				if (url.pathname === "/delete-cache") {
@@ -60,6 +67,7 @@ export default {
 				return new Response(result.value, {
 					status: 200,
 					headers: [
+						...headers,
 						// ['Cache-Control', 'max-age=30, s-maxage=30, public'],
 						['Content-Type', result.type]
 					],
@@ -93,6 +101,7 @@ export default {
 			return new Response(value, {
 				status: 200,
 				headers: [
+					...headers,
 					['Cache-Control', 'max-age=30, s-maxage=30, public'],
 					['Content-Type', contentType!]
 				],
