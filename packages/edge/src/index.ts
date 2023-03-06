@@ -1,4 +1,4 @@
-import type { BuildConfig, CompressConfig } from "@bundlejs/core/src/index.ts";
+import { BuildConfig, CompressConfig, createConfig } from "@bundlejs/core/src/index.ts";
 import { deepAssign } from "@bundlejs/core/src/utils/deep-equal.ts";
 
 import { parseShareURLQuery, parseConfig } from "./_parse-query.ts";
@@ -16,6 +16,13 @@ export default {
 			const url = new URL(request.url);			
 			url.hostname = "bundlejs.deno.dev";
 			console.log(url.href)
+
+			if (url.pathname === "/clear-all-cache-123") {
+				const { keys } = await env.KV.list();
+				await Promise.allSettled(keys.map(({ name }) => {
+					return env.KV.delete(name)
+				}))
+			}
 
 			if (url.pathname === "/favicon.ico") 
 				return Response.redirect("https://bundlejs.com/favicon/favicon.ico");
@@ -35,7 +42,10 @@ export default {
 				metafileQuery ||
 				Boolean(initialConfig?.analysis);
 			
-			const configObj: BuildConfig & CompressConfig = deepAssign({ polyfill }, initialConfig, {
+			const configObj: BuildConfig & CompressConfig = deepAssign({ 
+				polyfill,
+				compression: createConfig("compress", initialConfig.compression)
+			}, initialConfig, {
 				entryPoints: ["/index.tsx"],
 				esbuild: enableMetafile ? {
 					metafile: enableMetafile

@@ -11,3 +11,10 @@ kv_namespaces = [
   { binding = "KV", id = "ff32d5864d6b4fdf9b2bad927ec41d44", preview_id = "1568adf0873b4b86ba750486567ed398" }
 ]
 send_metrics = false
+
+[vars]
+
+
+
+
+
