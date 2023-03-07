@@ -1,5 +1,6 @@
 import type { BuildConfig, CompressConfig, CompressionOptions } from "@bundlejs/core/src/index.ts";
 import { deepAssign } from "@bundlejs/core/src/utils/deep-equal.ts";
+import { compressToURL } from "@bundlejs/core/src/utils/lz-string.ts";
 
 import { parseShareURLQuery, parseConfig } from "./_parse-query.ts";
 
@@ -80,12 +81,14 @@ export default {
 
 			const fileResult = url.searchParams.get("file");
 			const badgeResult = url.searchParams.get("badge");
-			const _key = JSON.stringify({ 
-				...(configObj as object), 
-				initialValue: initialValue.trim(), 
-				badge: badgeResult,
-				file: fileResult
-			});
+			const _key = compressToURL(
+				JSON.stringify({ 
+					...(configObj as object), 
+					initialValue: initialValue.trim(), 
+					badge: badgeResult,
+					file: fileResult
+				}).trim()
+			).slice(0, 512 - 1);
 
 			const headers = Object.entries({
 				"Access-Control-Allow-Origin": "*",
