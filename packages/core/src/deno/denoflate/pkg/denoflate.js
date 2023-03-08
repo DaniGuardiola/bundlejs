@@ -224,10 +224,10 @@ async function load(module, imports) {
 }
 
 async function init(input) {
-  if (typeof input === "undefined") {
-    // input = new URL('denoflate_bg.wasm', import.meta.url);
-    input = new URL("denoflate_bg.wasm");
-  }
+  // if (typeof input === "undefined") {
+  //   // input = new URL('denoflate_bg.wasm', import.meta.url);
+  //   input = new URL("denoflate_bg.wasm");
+  // }
   const imports = {};
   imports.wbg = {};
   imports.wbg.__wbindgen_string_new = function(arg0, arg1) {

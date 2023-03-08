@@ -3,22 +3,13 @@
   "version": "0.0.0",
   "access": "public",
   "type": "module",
-  "description": "An animation library for the modern web which utilizes the Web Animation API (WAAPI) to create butter smooth animation.",
-  "typedocMain": "src/index.ts",
+  "description": "Edge API",
   "types": "@types/index.d.ts",
   "files": [
     "lib",
     "src",
     "@types"
   ],
-  "scripts": {
-    "start": "wrangler dev",
-    "deploy": "wrangler publish",
-    "build": "vite build",
-    "dev": "wrangler dev",
-    "dts": "del-cli @types/ && tsc --project dts.tsconfig.json",
-    "pre-release": "pnpm build"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/okikio/bundlejs.git",
@@ -60,13 +51,8 @@
     "text-encoding-shim": "^1.0.5"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "^4.20230228.0",
     "@types/node": "^18.14.6",
-    "del-cli": "^5.0.0",
     "pnpm": "^7.28.0",
-    "typescript": "5.0.1-rc",
-    "vite": "^4.1.4",
-    "vite-plugin-cp": "^1.0.0",
-    "wrangler": "2.12.0"
+    "typescript": "5.0.1-rc"
   }
 }

@@ -1,9 +1,0 @@
-{
-  "imports": {
-    "@bundlejs/core/": "../core/",
-    "@bundlejs/core": "../core/src/index.ts",
-    "esbuild-wasm": "npm:esbuild-wasm",
-    "esbuild": "npm:esbuild",
-    "resolve.exports": "https://esm.sh/resolve.exports"
-  }
-}

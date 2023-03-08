@@ -25,7 +25,7 @@ export const ESCAPE_TO_COLOR = {
 export type Escape = "0" | "1" | "4" | keyof typeof ESCAPE_TO_COLOR;
 export type Color = typeof ESCAPE_TO_COLOR[keyof typeof ESCAPE_TO_COLOR];
 
-import { encodeHTML } from "https://unpkg.com/entities@4.4.0/lib/esm/encode.js";
+import { encodeHTML } from "entities";
 
 // https://github.com/sindresorhus/escape-goat
 export function htmlEscape(string: string) {

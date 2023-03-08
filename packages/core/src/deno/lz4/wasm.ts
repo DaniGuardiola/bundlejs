@@ -68,7 +68,7 @@ async function w(A, I) {
   }
 }
 async function o(I) {
-  void 0 === I && (I = import.meta.url.replace(/\.js$/, "_bg.wasm"));
+  // void 0 === I && (I = import.meta.url.replace(/\.js$/, "_bg.wasm"));
   ("string" == typeof I ||
     ("function" == typeof Request && I instanceof Request) ||
     ("function" == typeof URL && I instanceof URL)) &&

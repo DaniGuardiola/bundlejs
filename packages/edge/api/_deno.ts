@@ -13,7 +13,7 @@ import { build, setFile, deepAssign, useFileSystem, createConfig, compress, COMP
 import ESBUILD_WASM from "@bundlejs/core/src/wasm.ts";
 
 import { createNotice } from "@bundlejs/core/src/utils/create-notice.ts";
-import { parseShareURLQuery, parseConfig } from "./src/_parse-query.ts";
+import { parseShareURLQuery, parseConfig } from "./_parse-query.js";
 
 const FileSystem = useFileSystem();
 const timeFormatter = new Intl.RelativeTimeFormat("en", {
@@ -27,7 +27,7 @@ const inputModelResetValue = [
 
 let WASM_MODULE: Uint8Array = await ESBUILD_WASM();
 let wasmModule = new WebAssembly.Module(WASM_MODULE);
-import styleText from "./style.ts";
+import styleText from "./_style.js";
 serve(async (req: Request) => {
   try {
     const fs = await FileSystem;
