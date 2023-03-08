@@ -8,9 +8,12 @@ globalThis.TextEncoder = globalThis.TextEncoder ?? Encoder;
 globalThis.TextDecoder = globalThis.TextDecoder ?? Decoder;
 globalThis.location = globalThis.location ?? new URL("http://localhost:3000/");
 
+import wasmModule from '../../core/lib/esbuild.wasm?module';
+
 // import type { BuildConfig, CompressConfig } from "../../core/src/index";
+// import { ESBUILD_SOURCE_WASM } from "../../core/lib/index.mjs";
 import { build, setFile, deepAssign, useFileSystem, createConfig, compress } from "../../core/lib/index.mjs";
-import { ESBUILD_SOURCE_WASM, createNotice } from "../../core/lib/index.mjs";
+import { createNotice } from "../../core/lib/index.mjs";
 
 import { parseShareURLQuery, parseConfig } from "./_parse-query.mjs";
 
@@ -31,7 +34,7 @@ export const config = {
 };
 
 let WASM_MODULE;
-let wasmModule;
+// let wasmModule;
 export default async function handler(req) {
 	try {
 		const fs = await FileSystem;
@@ -60,8 +63,8 @@ export default async function handler(req) {
 
 		const polyfillQuery = url.searchParams.has("polyfill");
 
-		if (!WASM_MODULE) WASM_MODULE = await ESBUILD_SOURCE_WASM();
-		if (!wasmModule) wasmModule = new WebAssembly.Module(WASM_MODULE);
+		// if (!WASM_MODULE) WASM_MODULE = await ESBUILD_SOURCE_WASM();
+		// if (!wasmModule) wasmModule = new WebAssembly.Module(WASM_MODULE);
 		const configObj = deepAssign({
 			polyfill: polyfillQuery,
 			compression: createConfig("compress", initialConfig.compression)

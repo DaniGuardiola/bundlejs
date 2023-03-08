@@ -153,3 +153,4 @@ packages/analysis/@types/
 
 packages/edge/lib/
 packages/edge/@types/
+.vercel
