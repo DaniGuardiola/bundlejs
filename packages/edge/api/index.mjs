@@ -1,17 +1,13 @@
-// type EncoderType = typeof globalThis.TextEncoder;
-// type DecoderType = typeof globalThis.TextDecoder;
-
 import { TextEncoder as Encoder, TextDecoder as Decoder } from 'text-encoding-shim';
 
+globalThis.TextEncoder = Encoder;
+globalThis.TextDecoder = Decoder;
+
 globalThis.performance = globalThis.performance ?? { now: Date.now };
-globalThis.TextEncoder = globalThis.TextEncoder ?? Encoder;
-globalThis.TextDecoder = globalThis.TextDecoder ?? Decoder;
 globalThis.location = globalThis.location ?? new URL("http://localhost:3000/");
 
 import wasmModule from '../../core/lib/esbuild.wasm?module';
-
-// import type { BuildConfig, CompressConfig } from "../../core/src/index";
-// import { ESBUILD_SOURCE_WASM } from "../../core/lib/index.mjs";
+;
 import { build, setFile, deepAssign, useFileSystem, createConfig, compress } from "../../core/lib/index.mjs";
 import { createNotice } from "../../core/lib/index.mjs";
 
@@ -33,7 +29,8 @@ export const config = {
 	runtime: 'edge', // this is a pre-requisite
 };
 
-let WASM_MODULE;
+// import { ESBUILD_SOURCE_WASM } from "../../core/lib/index.mjs"
+// let WASM_MODULE;
 // let wasmModule;
 export default async function handler(req) {
 	try {
