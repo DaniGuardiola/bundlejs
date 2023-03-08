@@ -4,38 +4,11 @@
   "access": "public",
   "type": "module",
   "description": "Edge API",
-  "types": "@types/index.d.ts",
-  "files": [
-    "lib",
-    "src",
-    "@types"
-  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/okikio/bundlejs.git",
     "directory": "packages/edge"
   },
-  "keywords": [
-    "modern",
-    "bundlejs",
-    "bundle size checker",
-    "esbuild-wasm",
-    "gzip",
-    "brotli",
-    "deno",
-    "bundler",
-    "treeshake",
-    "bundlephobia",
-    "cdn",
-    "github",
-    "skypack",
-    "unpkg",
-    "compressed",
-    "jsx",
-    "minify",
-    "typescript",
-    "edge"
-  ],
   "author": {
     "name": "Okiki Ojo",
     "email": "hey@okikio.dev",
@@ -51,7 +24,6 @@
     "text-encoding-shim": "^1.0.5"
   },
   "devDependencies": {
-    "@types/node": "^18.14.6",
     "pnpm": "^7.28.0",
     "typescript": "5.0.1-rc"
   }

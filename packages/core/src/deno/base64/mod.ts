@@ -11,7 +11,7 @@
  * import {
  *   decode,
  *   encode,
- * } from "https://deno.land/std@$STD_VERSION/encoding/base64.ts";
+ * } from "https://deno.land/std@$STD_VERSION/encoding/base64";
  *
  * const b64Repr = "Zm9vYg==";
  *

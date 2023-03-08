@@ -53,7 +53,7 @@ export function compressToURL(input: string): string {
 export function decompressFromURL(input: string): string | null {
   if (input == null) return "";
   if (input == "") return null;
-  input = input.replaceAll(" ", "+");
+  input = input.replace(/\s/g, "+");
 
   return _decompress(input.length, 32, (index) => getBaseValue(keyStrUriSafe, input.charAt(index)));
 }

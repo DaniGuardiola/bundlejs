@@ -1,5 +1,5 @@
 // Based off of `zstd` https://deno.land/x/zstd_wasm@0.0.16/deno/zstd.ts?source by @bokuweb
-import { decode } from "../base64/mod.ts"
+import { decode } from "../base64/mod"
 import Module from './deno.js';
 
 const initialized = (() =>
@@ -9,11 +9,11 @@ const initialized = (() =>
 
 
 let initWASM: Uint8Array;
-import { wasm } from "./encoded.wasm.ts";
+import { wasm } from "./encoded.wasm";
 export const getWASM = async () => {
   if (initWASM) return initWASM;
 
-  // const { wasm } = await import("./encoded.wasm.ts");
+  // const { wasm } = await import("./encoded.wasm");
   return (initWASM = decode(wasm));
 };
 

@@ -893,13 +893,13 @@ export class Range {
       rangeMap.delete("");
     }
 
-    const result = [...rangeMap.values()];
+    const result = Array.from(rangeMap.values());
     const cacheValue = result;
     cache.set(memoKey, cacheValue);
     cacheLastAccessTime.set(memoKey, Date.now());
 
     if (cache.size >= cacheLimit) {
-      const sortedCacheItems = [...cacheLastAccessTime.entries()].sort((a, b) => a[1] - b[1]);
+      const sortedCacheItems = Array.from(cacheLastAccessTime.entries()).sort((a, b) => a[1] - b[1]);
       const oldestKey = sortedCacheItems[0][0];
 
       cache.delete(oldestKey);

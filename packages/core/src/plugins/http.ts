@@ -1,19 +1,19 @@
 /** Based on https://github.com/hardfist/neo-tools/blob/main/packages/bundler/src/plugins/http.ts */
-import type { BuildConfig, LocalState } from "../build.ts";
-import type { StateArray } from "../configs/state.ts";
-import type { ESBUILD } from "../types.ts";
+import type { BuildConfig, LocalState } from "../build";
+import type { StateArray } from "../configs/state";
+import type { ESBUILD } from "../types";
 
-import { dispatchEvent, LOGGER_ERROR, LOGGER_INFO, LOGGER_WARN } from "../configs/events.ts";
+import { dispatchEvent, LOGGER_ERROR, LOGGER_INFO, LOGGER_WARN } from "../configs/events";
 
-import { CDN_RESOLVE } from "./cdn.ts";
-import { getRequest } from "../utils/fetch-and-cache.ts";
-import { decode } from "../utils/encode-decode.ts";
+import { CDN_RESOLVE } from "./cdn";
+import { getRequest } from "../utils/fetch-and-cache";
+import { decode } from "../utils/encode-decode";
 
-import { getCDNUrl, DEFAULT_CDN_HOST, getCDNStyle } from "../utils/util-cdn.ts";
-import { inferLoader } from "../utils/loader.ts";
+import { getCDNUrl, DEFAULT_CDN_HOST, getCDNStyle } from "../utils/util-cdn";
+import { inferLoader } from "../utils/loader";
 
-import { urlJoin, extname, isBareImport } from "../utils/path.ts";
-import { setFile } from "../util.ts";
+import { urlJoin, extname, isBareImport } from "../utils/path";
+import { setFile } from "../util";
 
 /** HTTP Plugin Namespace */
 export const HTTP_NAMESPACE = "http-url";

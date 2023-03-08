@@ -1,11 +1,11 @@
 import type * as ESBUILD from "esbuild-wasm";
 
-import type { Platform } from "../configs/platform.ts";
-import { PLATFORM_AUTO } from "../configs/platform.ts";
-import pkg from "../../package.json" assert { type: "json" };
+import type { Platform } from "../configs/platform";
+import { PLATFORM_AUTO } from "../configs/platform";
+// import pkg from "esbuild-wasm/package.json";
 
-const { dependencies } = pkg;
-const version = dependencies["esbuild-wasm"].replaceAll(/[^0-9.-]/g, "");
+// const { dependencies } = pkg;
+// const version = dependencies["esbuild-wasm"].replaceAll(/[^0-9.-]/g, "");
 
 /**
  * Determines which esbuild skew to use depending on the platform option supplied, 

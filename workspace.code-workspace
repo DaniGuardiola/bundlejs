@@ -5,10 +5,6 @@
       "path": "."
     },
     {
-      "name": "📦 @bundlejs/analysis",
-      "path": "packages/analysis"
-    },
-    {
       "name": "📦 @bundlejs/core",
       "path": "packages/core"
     },
@@ -16,10 +12,6 @@
       "name": "📦 @bundlejs/edge",
       "path": "packages/edge"
     },
-    {
-      "name": "🚀 @bundlejs/website",
-      "path": "packages/website"
-    }
   ],
 	"settings": {
     "typescript.tsdk": "✨ root/node_modules/typescript/lib",

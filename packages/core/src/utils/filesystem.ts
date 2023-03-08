@@ -1,7 +1,7 @@
-import { decode, encode } from "./encode-decode.ts";
-import { dirname, basename, resolve, sep } from "../deno/path/mod.ts";
+import { decode, encode } from "./encode-decode";
+import { dirname, basename, resolve, sep } from "../deno/path/mod";
 
-import { LOGGER_WARN, dispatchEvent } from "../configs/events.ts";
+import { LOGGER_WARN, dispatchEvent } from "../configs/events";
 
 export interface IFileSystem<T, Content = Uint8Array> {
   /** Direct Access to Virtual Filesystem Storage, if requred for some specific use case */
@@ -281,7 +281,7 @@ export async function createOPFSFileSystem() {
     }
 
     return fs;
-  } catch(e) {
+  } catch (e) {
     throw new Error(`Cannot create OPFS Virtual File System: ${e}`, { cause: e })
   }
 }

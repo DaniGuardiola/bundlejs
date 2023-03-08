@@ -1,18 +1,18 @@
-import type { BuildConfig, LocalState } from "../build.ts";
-import type { StateArray } from "../configs/state.ts";
-import type { ESBUILD } from "../types.ts";
+import type { BuildConfig, LocalState } from "../build";
+import type { StateArray } from "../configs/state";
+import type { ESBUILD } from "../types";
 
-import { dispatchEvent, LOGGER_WARN } from "../configs/events.ts";
+import { dispatchEvent, LOGGER_WARN } from "../configs/events";
 
-import { determineExtension, HTTP_NAMESPACE } from "./http.ts";
+import { determineExtension, HTTP_NAMESPACE } from "./http";
 import { resolve as resolveExports, imports as resolveImports, legacy } from "resolve.exports";
-import { parsePackageName as parsePackageName } from "../utils/parse-package-name.ts";
+import { parsePackageName as parsePackageName } from "../utils/parse-package-name";
 
-import { extname, isBareImport } from "../utils/path.ts";
-import { getRequest } from "../utils/fetch-and-cache.ts";
+import { extname, isBareImport } from "../utils/path";
+import { getRequest } from "../utils/fetch-and-cache";
 
-import { getCDNUrl, getCDNStyle, DEFAULT_CDN_HOST } from "../utils/util-cdn.ts";
-// import { resolveImports } from "../utils/resolve-imports.ts";
+import { getCDNUrl, getCDNStyle, DEFAULT_CDN_HOST } from "../utils/util-cdn";
+// import { resolveImports } from "../utils/resolve-imports";
 
 /** CDN Plugin Namespace */
 export const CDN_NAMESPACE = "cdn-url";

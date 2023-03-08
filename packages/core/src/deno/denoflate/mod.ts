@@ -8,12 +8,12 @@
 //   unzlib
 // } from "./pkg/denoflate.js";
 
-import type { InitOutput } from "./pkg/denoflate.d.ts";
-// import init from "./pkg/denoflate.js.ts"; 
+import type { InitOutput } from "./pkg/denoflate.d";
+// import init from "./pkg/denoflate.js"; 
 
 // @ts-ignore
-// import { wasm as WASM } from "./pkg/denoflate_bg.wasm.js.ts";
-// import { source } from "./pkg/wasm.ts.ts";
+// import { wasm as WASM } from "./pkg/denoflate_bg.wasm.js";
+// import { source } from "./pkg/wasm.ts";
 
 import * as _exports from "./pkg/denoflate.js";
 import { wasm as WASM } from "./pkg/denoflate_bg.wasm.js";

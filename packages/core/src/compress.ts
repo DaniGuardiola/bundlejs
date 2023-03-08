@@ -1,6 +1,6 @@
-import { bytes } from "./utils/pretty-bytes.ts";
-import { encode } from "./utils/encode-decode.ts";
-import { createConfig } from "./configs/config.ts";
+import { bytes } from "./utils/pretty-bytes";
+import { encode } from "./utils/encode-decode";
+import { createConfig } from "./configs/config";
 
 /**
  * An API for compressing a stream of data.
@@ -48,10 +48,10 @@ export const COMPRESS_CONFIG: CompressionOptions = {
   quality: 9
 };
 
-import { compress as brotli, getWASM as brotliWASM } from "./deno/brotli/mod.ts";
-import { compress as zstd, getWASM as zstdWASM } from "./deno/zstd/mod.ts";
-import { compress as lz4, getWASM as lz4WASM } from "./deno/lz4/mod.ts";
-import { gzip, getWASM as gzipWASM } from "./deno/denoflate/mod.ts";
+import { compress as brotli, getWASM as brotliWASM } from "./deno/brotli/mod";
+import { compress as zstd, getWASM as zstdWASM } from "./deno/zstd/mod";
+import { compress as lz4, getWASM as lz4WASM } from "./deno/lz4/mod";
+import { gzip, getWASM as gzipWASM } from "./deno/denoflate/mod";
 
 /**
  * Use multiple compression algorithims & pretty-bytes for the total gzip, brotli and/or lz4 compressed size

@@ -1,12 +1,12 @@
-import type { BuildConfig, LocalState } from "../build.ts";
-import type { StateArray } from "../configs/state.ts";
-import type { ESBUILD } from "../types.ts";
-import { parsePackageName } from "../util.ts";
+import type { BuildConfig, LocalState } from "../build";
+import type { StateArray } from "../configs/state";
+import type { ESBUILD } from "../types";
+import { parsePackageName } from "../util";
 
-import { encode } from "../utils/encode-decode.ts";
-import { getCDNUrl } from "../utils/util-cdn.ts";
-import { isAlias } from "./alias.ts";
-import { CDN_RESOLVE } from "./cdn.ts";
+import { encode } from "../utils/encode-decode";
+import { getCDNUrl } from "../utils/util-cdn";
+import { isAlias } from "./alias";
+import { CDN_RESOLVE } from "./cdn";
 
 /** External Plugin Namespace */
 export const EXTERNALS_NAMESPACE = "external-globals";
