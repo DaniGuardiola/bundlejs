@@ -90,7 +90,6 @@ importers:
   packages/edge:
     specifiers:
       '@bundlejs/core': workspace:^0.0.0
-      '@types/node': ^18.14.6
       esbuild-wasm: ^0.17.11
       pnpm: ^7.28.0
       text-encoding-shim: ^1.0.5
@@ -100,7 +99,6 @@ importers:
       esbuild-wasm: 0.17.11
       text-encoding-shim: 1.0.5
     devDependencies:
-      '@types/node': 18.14.6
       pnpm: 7.28.0
       typescript: 5.0.1-rc
 
