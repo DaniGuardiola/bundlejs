@@ -131,11 +131,11 @@ importers:
   packages/edge:
     specifiers:
       '@bundlejs/core': workspace:^0.0.0
-      '@cloudflare/workers-types': ^4.20230228.0
+      '@cloudflare/workers-types': ^4.20230307.0
       '@types/node': ^18.14.6
       del-cli: ^5.0.0
       esbuild-wasm: ^0.17.11
-      pnpm: ^7.28.0
+      pnpm: ^7.29.1
       text-encoding-shim: ^1.0.5
       typescript: 5.0.1-rc
       vite: ^4.1.4
@@ -146,10 +146,10 @@ importers:
       esbuild-wasm: 0.17.11
       text-encoding-shim: 1.0.5
     devDependencies:
-      '@cloudflare/workers-types': 4.20230228.0
+      '@cloudflare/workers-types': 4.20230307.0
       '@types/node': 18.14.6
       del-cli: 5.0.0
-      pnpm: 7.28.0
+      pnpm: 7.29.1
       typescript: 5.0.1-rc
       vite: 4.1.4_@types+node@18.14.6
       vite-plugin-cp: 1.0.0
@@ -1631,8 +1631,8 @@ packages:
       mime: 3.0.0
     dev: true
 
-  /@cloudflare/workers-types/4.20230228.0:
-    resolution: {integrity: sha512-tDaqH3DrKmDoe/YrCnzVSqjNH6GnUOOajv2Ztj2h7BPLFyYTb81iCkARgb+G4bpxhn7y4f1KxxDT2+Yp4rt7Hg==}
+  /@cloudflare/workers-types/4.20230307.0:
+    resolution: {integrity: sha512-Go968aDDcqONHQcUdgIiPRkPdT4QTzD0ecHJsI1u7ZiHPMOoZn+Dy7hYsdUJ5ldX9wTZDrICBM1rDKTRaDUitg==}
     dev: true
 
   /@colors/colors/1.5.0:
@@ -8475,6 +8475,12 @@ packages:
     hasBin: true
     dev: true
 
+  /pnpm/7.29.1:
+    resolution: {integrity: sha512-dn+65B2XpMIin7sQZvBIJ2Zyx8Z7LK95qyAvgEPE8qXkWYL/LuwpfMfK9Muc7+zNnpPwiQgtGEsxgOtuabFibQ==}
+    engines: {node: '>=14.6'}
+    hasBin: true
+    dev: true
+
   /postcss-font-grabber/3.1.0_postcss@8.4.21:
     resolution: {integrity: sha512-a23LnR0oAvys/KmeBvgz/YdPcGXumQFJEfaydbi5Rpc4pKOrrkHuW2NKhyZIon2hJFw9xuuMh9cFXSUMhjb3JQ==}
     engines: {node: '>=14.0.0'}
@@ -9502,8 +9508,8 @@ packages:
     resolution: {integrity: sha512-gRjMgK5uFjbCvdibeGJuy3I5OYz6VLoVdsOJdA6wV0WlfQVLFueoqMxwwYD9RODdgb6oUIvlRlsyFSiQkMKu0g==}
     dev: true
 
-  /spdx-correct/3.1.1:
-    resolution: {integrity: sha512-cOYcUWwhCuHCXi49RhFRCyJEK3iPj1Ziz9DpViV3tbZOwXD49QzIN3MpOLJNxh2qwq2lJJZaKMVw9qNi4jTC0w==}
+  /spdx-correct/3.2.0:
+    resolution: {integrity: sha512-kN9dJbvnySHULIluDHy32WHRUu3Og7B9sbY7tsFLctQkIqnMh3hErYgdMjTYuqmcXX+lK5T1lnUt3G7zNswmZA==}
     dependencies:
       spdx-expression-parse: 3.0.1
       spdx-license-ids: 3.0.12
@@ -10454,7 +10460,7 @@ packages:
   /validate-npm-package-license/3.0.4:
     resolution: {integrity: sha512-DpKm2Ui/xN7/HQKCtpZxoRWBhZ9Z0kqtygG8XCgNQ8ZlDnxuQmWhj566j8fN4Cu3/JmbhsDo7fcAJq4s9h27Ew==}
     dependencies:
-      spdx-correct: 3.1.1
+      spdx-correct: 3.2.0
       spdx-expression-parse: 3.0.1
     dev: true
 
