@@ -64,14 +64,44 @@ async function generateResult(_jsonKey: string, _badgeKey: string, value: Record
 	const fileQuery = url.searchParams.has("file");
 	const badgeQuery = url.searchParams.has("badge");
 	const badgeResult = url.searchParams.get("badge");
-	
-	if (metafileQuery && value.metafile) {
-		return new Response(JSON.stringify(value.metafile), {
+	const badgeStyle = url.searchParams.get("badge-style");
+
+	if (badgeQuery) {
+		const { size } = value as {
+			size: {
+				"type": string,
+				"rawUncompressedSize": number,
+				"uncompressedSize": string,
+				"rawCompressedSize": number,
+				"compressedSize": string,
+				"size": string
+			}
+		};
+		const detailedBadge = badgeResult?.includes("detail");
+		const urlQuery = encodeURIComponent(`https://bundlejs.com/${url.search}`);
+		const query = url.searchParams.get("q") ?? "@okikio/animate";
+		const detailBadgeText = detailedBadge ?
+			`${encodeURIComponent(`${size.uncompressedSize} `)}-->${encodeURIComponent(` `)}` :
+			"";
+		const detailBadgeName = `bundlejs${detailedBadge ? encodeURIComponent(` (${query})`) : ""}`;
+		const imgUrl = new URL(
+			`https://img.shields.io/badge/${detailBadgeName}-${detailBadgeText}${encodeURIComponent(`${size.compressedSize} (gzip)`)
+			}-blue?link=${urlQuery}`
+		);
+		if (badgeStyle) {
+			imgUrl.searchParams.append("style", badgeStyle);
+		}
+		const imgShield = await fetch(imgUrl).then(res => res.text());
+		await env.BADGEKV.put(_badgeKey, imgShield, {
+			expirationTtl: 7200
+		})
+
+		return new Response(imgShield, {
 			status: 200,
 			headers: [
 				...headers,
 				['Cache-Control', 'max-age=30, s-maxage=30, public'],
-				['Content-Type', 'application/json']
+				['Content-Type', 'image/svg+xml']
 			],
 		})
 	}
@@ -87,44 +117,13 @@ async function generateResult(_jsonKey: string, _badgeKey: string, value: Record
 		})
 	}
 
-	if (badgeQuery) {
-		const { size } = value as {
-			size: {
-				"type": string,
-				"rawUncompressedSize": number,
-				"uncompressedSize": string,
-				"rawCompressedSize": number,
-				"compressedSize": string,
-				"size": string
-			}
-		}; 
-		const detailedBadge = badgeResult?.includes("detail");
-		const urlQuery = encodeURIComponent(`https://bundlejs.com/${url.search}`);
-		const query = url.searchParams.get("q") ?? "@okikio/animate";
-		const detailBadgeText = detailedBadge ?
-			`${encodeURIComponent(`${size.uncompressedSize} `)}-->${encodeURIComponent(` `)}` :
-			"";
-		const detailBadgeName = `bundlejs${detailedBadge ? encodeURIComponent(` (${query})`) : ""}`;
-		const imgUrl = new URL(
-		`https://img.shields.io/badge/${detailBadgeName}-${detailBadgeText}${
-				encodeURIComponent(`${size.compressedSize} (gzip)`)
-			}-blue?link=${urlQuery}`
-		);
-		const badgeStyle = url.searchParams.get("badge-style");
-		if (badgeStyle) {
-			imgUrl.searchParams.append("style", badgeStyle);
-		}
-		const imgShield = await fetch(imgUrl).then(res => res.text());
-		await env.BADGEKV.put(_badgeKey, imgShield, {
-			expirationTtl: 7200
-		})
-
-		return new Response(imgShield, {
+	if (metafileQuery && value.metafile) {
+		return new Response(JSON.stringify(value.metafile), {
 			status: 200,
 			headers: [
 				...headers,
 				['Cache-Control', 'max-age=30, s-maxage=30, public'],
-				['Content-Type', 'image/svg+xml']
+				['Content-Type', 'application/json']
 			],
 		})
 	}
@@ -210,10 +209,12 @@ export default {
 			).slice(0, 512 - 1);
 
 			const badgeResult = url.searchParams.get("badge");
+			const badgeStyle = url.searchParams.get("badge-style");
 			const _badgeKey = compressToBase64(
 				JSON.stringify({ 
 					_jsonKey,
-					badgeResult
+					badgeResult,
+					badgeStyle
 				}).trim()
 			).slice(0, 512 - 1);
 
@@ -233,20 +234,27 @@ export default {
 			if (url.pathname !== "/no-cache") {
 				const BADGEResult = await env.BADGEKV.get(_badgeKey, "text");
 				if (BADGEResult) {
-					return new Response(BADGEResult, {
-						status: 200,
-						headers: [
-							...headers,
-							['Cache-Control', 'max-age=3600, s-maxage=30, public'],
-							['Content-Type', 'application/json']
-						],
-					})
+					const decompressed = decompressFromBase64(BADGEResult);
+					if (decompressed) {
+						return new Response(decompressed, {
+							status: 200,
+							headers: [
+								...headers,
+								['Cache-Control', 'max-age=3600, s-maxage=30, public'],
+								['Content-Type', 'application/json']
+							],
+						})
+					}
 				}
 
 				const start = Date.now();
-				const JSONResult = await env.JSONKV.get<Record<string, any>>(_jsonKey, "json");
+				const JSONResult = await env.JSONKV.get(_jsonKey, "text");
 				if (JSONResult) {
-					return await generateResult(_jsonKey, _badgeKey, JSONResult, url, env, true, Date.now() - start);
+					const decompressed = decompressFromBase64(JSONResult);
+					if (decompressed) {
+						const value: Record<string, any> = JSON.parse(decompressed);
+						return await generateResult(_jsonKey, _badgeKey, value, url, env, true, Date.now() - start);
+					}
 				}
 			}
 
@@ -267,6 +275,7 @@ export default {
 			await env.JSONKV.put(_jsonKey, compressToBase64(JSON.stringify(value)), {
 				expirationTtl: 86400
 			})
+			await env.BADGEKV.delete(_badgeKey)
 
 			return await generateResult(_jsonKey, _badgeKey, value, url, env, false, Date.now() - start);
 		} catch (e) {

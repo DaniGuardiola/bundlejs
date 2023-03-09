@@ -8,7 +8,7 @@ node_compat = false
 # cwd = "dist"
 
 kv_namespaces = [
-  { binding = "JSONKV", id = "ff32d5864d6b4fdf9b2bad927ec41d44" },
-  { binding = "BADGEKV", id = "d470a9afb4944a8ab5f70c45144bcfe4" }
+  { binding = "JSONKV", id = "ff32d5864d6b4fdf9b2bad927ec41d44", preview_id = "0e7fb7d294414f62924569dcd9df3e5a" },
+  { binding = "BADGEKV", id = "d470a9afb4944a8ab5f70c45144bcfe4", preview_id = "18c87979cb834850b269b89de1692860" }
 ]
 send_metrics = false
