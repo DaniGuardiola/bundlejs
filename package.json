@@ -8,6 +8,7 @@
     "packages/*"
   ],
   "scripts": {
+    "build": "pnpm --filter=core build:all",
     "typedoc": "rm -r -f website/dists/docs/ && node ./.typedoc/build.js && typedoc --options ./.typedoc/typedoc.jsonc && node ./.typedoc/rehype.js",
     "pre-release:all": "pnpm -r pre-release && pnpm typedoc",
     "semantic-release": "semantic-release"
