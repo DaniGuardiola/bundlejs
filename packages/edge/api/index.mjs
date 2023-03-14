@@ -32,6 +32,7 @@ export const config = {
 // import { ESBUILD_SOURCE_WASM } from "../../core/lib/index.mjs"
 // let WASM_MODULE;
 // let wasmModule;
+// - Comment -
 export default async function handler(req) {
 	try {
 		const fs = await FileSystem;
