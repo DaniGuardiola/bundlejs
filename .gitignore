@@ -145,12 +145,15 @@ pnpm-debug.log*
 
 core.*
 
+packages/core/dist/
 packages/core/lib/
 packages/core/@types/
 
+packages/analysis/dist/
 packages/analysis/lib/
 packages/analysis/@types/
 
+packages/edge/dist/
 packages/edge/lib/
 packages/edge/@types/
 .vercel

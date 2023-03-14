@@ -24,17 +24,20 @@ export async function init(platform = PLATFORM_AUTO, opts: ESBUILD.InitializeOpt
         platform !== "node" &&
         platform !== "deno"
       ) {
-        if ("wasmModule" in opts) {
-          await esbuild.initialize(opts);
-        } else if ("wasmURL" in opts) { 
-          await esbuild.initialize(opts);
-        } else {
-          const { default: ESBUILD_WASM } = await import("./wasm");
-          await esbuild.initialize({
-            wasmModule: new WebAssembly.Module(await ESBUILD_WASM()),
-            ...opts
-          });
-        }
+        // if ("wasmModule" in opts) {
+        //   await esbuild.initialize(opts);
+        // } else if ("wasmURL" in opts) { 
+        //   await esbuild.initialize(opts);
+        // } 
+
+        await esbuild.initialize(opts);
+        // else {
+        //   const { default: ESBUILD_WASM } = await import("./wasm");
+        //   await esbuild.initialize({
+        //     wasmModule: new WebAssembly.Module(await ESBUILD_WASM()),
+        //     ...opts
+        //   });
+        // }
       }
 
       dispatchEvent(INIT_COMPLETE);

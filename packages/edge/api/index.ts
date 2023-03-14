@@ -1,15 +1,23 @@
+// export const config = {
+// 	runtime: 'edge', // this is a pre-requisite
+// };
+
 import { TextEncoder as Encoder, TextDecoder as Decoder } from 'text-encoding-shim';
 
+// @ts-ignore
 globalThis.TextEncoder = Encoder;
 globalThis.TextDecoder = Decoder;
 
+// @ts-ignore
 globalThis.performance = globalThis.performance ?? { now: Date.now };
+
+// @ts-ignore
 globalThis.location = globalThis.location ?? new URL("http://localhost:3000/");
 
-import wasmModule from '../../core/lib/esbuild.wasm?module';
-;
-import { build, setFile, deepAssign, useFileSystem, createConfig, compress } from "../../core/lib/index.mjs";
-import { createNotice } from "../../core/lib/index.mjs";
+// @ts-ignore
+import wasmModule from '../../core/src/esbuild.wasm?module';
+import { build, setFile, deepAssign, useFileSystem, createConfig, compress } from "../../core/src/index";
+import { createNotice } from "../../core/src/index";
 
 import { parseShareURLQuery, parseConfig } from "./_parse-query.mjs";
 
@@ -25,20 +33,16 @@ const inputModelResetValue = [
 	'export * from "@okikio/animate";'
 ].join("\n");
 
-export const config = {
-	runtime: 'edge', // this is a pre-requisite
-};
-
-// import { ESBUILD_SOURCE_WASM } from "../../core/lib/index.mjs"
+// import { ESBUILD_SOURCE_WASM } from "../../core/dist/index.mjs"
 // let WASM_MODULE;
 // let wasmModule;
 // - Comment -
-export default async function handler(req) {
+export default async function handler(req: Request) {
 	try {
 		const fs = await FileSystem;
 		const start = performance.now();
 
-		const url = new URL(req.url);
+		const url = new URL(req.url.toString().replace(/^https\,/, ""));
 		console.log(url.href)
 
 		if (url.pathname === "/favicon.ico")

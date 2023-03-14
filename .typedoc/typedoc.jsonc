@@ -2,7 +2,8 @@
   "$schema": "https://typedoc.org/schema.json",
   "exclude": [
     "**/test.ts",
-    "**/@types/*.d.ts"
+    "**/@types/*.d.ts",
+    "**/dist/*.d.ts"
   ],
   "entryPoints": ["../packages/core/src/index.ts"],
   "name": "@bundlejs",

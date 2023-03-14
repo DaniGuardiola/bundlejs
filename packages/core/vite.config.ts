@@ -5,7 +5,7 @@ export default defineConfig({
   build: {
     target: ["chrome110"],
     sourcemap: true,
-    outDir: "lib",
+    outDir: "dist",
     assetsInlineLimit: 0,
     lib: {
       entry: "./src/index.ts",
@@ -15,40 +15,26 @@ export default defineConfig({
       output: [
         {
           format: "es",
-          manualChunks: {
-            "esbuild": ["esbuild-wasm"],
-            "esbuild-wasm": ["/src/wasm.ts"],
-            "lz4": ["/src/deno/lz4/wasm.ts"],
-            "gzip": ["/src/deno/denoflate/pkg/denoflate_bg.wasm.js"],
-            "brotli": ["/src/deno/brotli/wasm.ts"],
-          },
           chunkFileNames: "[name]-[hash].mjs",
           entryFileNames: "[name].mjs",
         },
         {
           format: "cjs",
-          manualChunks: {
-            "esbuild": ["esbuild-wasm"],
-            "esbuild-wasm": ["/src/wasm.ts"],
-            "lz4": ["/src/deno/lz4/wasm.ts"],
-            "gzip": ["/src/deno/denoflate/pkg/denoflate_bg.wasm.js"],
-            "brotli": ["/src/deno/brotli/wasm.ts"]
-          },
           entryFileNames: "[name].cjs",
           chunkFileNames: "[name]-[hash].cjs",
         },
-        // {
-        //   format: "umd",
-        //   entryFileNames: "[name].js",
-        //   inlineDynamicImports: true,
-        //   name: "bundlejs"
-        // }
+        {
+          format: "umd",
+          entryFileNames: "[name].js",
+          inlineDynamicImports: true,
+          name: "bundlejs"
+        }
       ],
       plugins: [
         copy({
           targets: [
             // @ts-ignore
-            { src: 'src/esbuild.wasm', dest: './lib' },
+            { src: 'src/esbuild.wasm', dest: './dist' },
           ]
         })
       ],

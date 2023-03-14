@@ -3,7 +3,7 @@
   "compilerOptions": {
     "declaration": true,
     "emitDeclarationOnly": true,
-    "declarationDir": "./@types"
+    "declarationDir": "./dist"
   },
   "includes": [
     "src/**/*"
@@ -12,6 +12,7 @@
     "node_modules",
     "tests/**/*",
     "@types/**/*",
+    "dist/**/*",
     "lib/**/*",
     "scripts/*",
     "*.ts"
