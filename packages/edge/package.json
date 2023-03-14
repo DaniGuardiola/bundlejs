@@ -20,6 +20,7 @@
   "homepage": "https://bundlejs.com",
   "dependencies": {
     "@bundlejs/core": "workspace:^0.0.0",
+    "esbuild": "^0.17.11",
     "esbuild-wasm": "^0.17.11",
     "text-encoding-shim": "^1.0.5"
   },

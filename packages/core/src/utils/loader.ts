@@ -1,4 +1,4 @@
-import type { Loader } from "esbuild-wasm";
+import type { Loader } from "esbuild-wasm/esm/browser.js";
 import { extname } from "./path";
 
 /** Based on https://github.com/egoist/play-esbuild/blob/main/src/lib/esbuild.ts */
@@ -11,7 +11,7 @@ export const inferLoader = (urlStr: string): Loader => {
   const ext = extname(urlStr);
   if (RESOLVE_EXTENSIONS.includes(ext))
     // Resolve all .js and .jsx files to .ts and .tsx files
-    return (/\.js(x)?$/.test(ext) ? ext.replace(/^\.js/, "") : ext).slice(1) as Loader;
+    return (/\.js(x)?$/.test(ext) ? ext.replace(/^\.js/, ".ts") : ext).slice(1) as Loader;
 
   if (ext === ".mjs" || ext === ".cjs") return "ts"; // "js"
   if (ext === ".mts" || ext === ".cts") return "ts";

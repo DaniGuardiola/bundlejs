@@ -90,12 +90,14 @@ importers:
   packages/edge:
     specifiers:
       '@bundlejs/core': workspace:^0.0.0
+      esbuild: ^0.17.11
       esbuild-wasm: ^0.17.11
       pnpm: ^7.28.0
       text-encoding-shim: ^1.0.5
       typescript: 5.0.1-rc
     dependencies:
       '@bundlejs/core': link:../core
+      esbuild: 0.17.11
       esbuild-wasm: 0.17.11
       text-encoding-shim: 1.0.5
     devDependencies:

@@ -1,4 +1,4 @@
-import type { PartialMessage } from "esbuild-wasm";
+import type { PartialMessage } from "esbuild-wasm/esm/browser.js";
 
 import { ansi } from "./ansi";
 import { getEsbuild } from "./get-esbuild";

@@ -1,4 +1,4 @@
-import type * as ESBUILD from "esbuild-wasm";
+import type * as ESBUILD from "esbuild-wasm/esm/browser.js";
 
 import type { Platform } from "./configs/platform";
 import { PLATFORM_AUTO } from "./configs/platform";
@@ -20,24 +20,22 @@ export async function init(platform = PLATFORM_AUTO, opts: ESBUILD.InitializeOpt
 
       const esbuild = await getEsbuild(platform);
       setState("esbuild", esbuild);
+      
       if (
         platform !== "node" &&
         platform !== "deno"
       ) {
-        // if ("wasmModule" in opts) {
-        //   await esbuild.initialize(opts);
-        // } else if ("wasmURL" in opts) { 
-        //   await esbuild.initialize(opts);
-        // } 
-
-        await esbuild.initialize(opts);
-        // else {
-        //   const { default: ESBUILD_WASM } = await import("./wasm");
-        //   await esbuild.initialize({
-        //     wasmModule: new WebAssembly.Module(await ESBUILD_WASM()),
-        //     ...opts
-        //   });
-        // }
+        if ("wasmModule" in opts) {
+          await esbuild.initialize(opts);
+        } else if ("wasmURL" in opts) { 
+          await esbuild.initialize(opts);
+        } else {
+          const { default: ESBUILD_WASM } = await import("./wasm");
+          await esbuild.initialize({
+            wasmModule: new WebAssembly.Module(await ESBUILD_WASM()),
+            ...opts
+          });
+        }
       }
 
       dispatchEvent(INIT_COMPLETE);

@@ -1,6 +1,6 @@
-// export const config = {
-// 	runtime: 'edge', // this is a pre-requisite
-// };
+export const config = {
+	runtime: 'edge', // this is a pre-requisite
+};
 
 import { TextEncoder as Encoder, TextDecoder as Decoder } from 'text-encoding-shim';
 
@@ -15,9 +15,9 @@ globalThis.performance = globalThis.performance ?? { now: Date.now };
 globalThis.location = globalThis.location ?? new URL("http://localhost:3000/");
 
 // @ts-ignore
-import wasmModule from '../../core/src/esbuild.wasm?module';
-import { build, setFile, deepAssign, useFileSystem, createConfig, compress } from "../../core/src/index";
-import { createNotice } from "../../core/src/index";
+import wasmModule from './dist/esbuild.wasm?module';
+import { build, setFile, deepAssign, useFileSystem, createConfig, compress } from "./dist/index.mjs";
+import { createNotice } from "./dist/index.mjs";
 
 import { parseShareURLQuery, parseConfig } from "./_parse-query.mjs";
 
@@ -33,11 +33,11 @@ const inputModelResetValue = [
 	'export * from "@okikio/animate";'
 ].join("\n");
 
-// import { ESBUILD_SOURCE_WASM } from "../../core/dist/index.mjs"
+// import { ESBUILD_SOURCE_WASM } from "./dist/_index.mjs"
 // let WASM_MODULE;
 // let wasmModule;
-// - Comment -
-export default async function handler(req: Request) {
+
+export default async function handler(req) {
 	try {
 		const fs = await FileSystem;
 		const start = performance.now();
@@ -76,9 +76,10 @@ export default async function handler(req: Request) {
 				metafile: enableMetafile
 			} : {},
 			init: {
-				platform: "browser",
+				platform: "edge",
 				worker: false,
-				wasmModule
+				wasmModule,
+				// wasmUrl: "https://unpkg.com/esbuild-wasm@0.17.11/esbuild.wasm"
 			},
 		});
 		console.log({ configObj })

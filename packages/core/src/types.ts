@@ -1,5 +1,5 @@
 import type { Platform } from "./configs/platform";
-import type * as ESBUILD from "esbuild-wasm/esm/browser.d";
+import type * as ESBUILD from "esbuild-wasm/esm/browser.js";
 
 export type CommonConfigOptions = {
   /**

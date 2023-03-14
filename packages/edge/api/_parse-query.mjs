@@ -1,4 +1,4 @@
-import { deepAssign, lzstring } from "../../core/dist/index.mjs";
+import { deepAssign, lzstring } from "./dist/index.mjs";
 
 const { decompressFromURL } = lzstring;
 

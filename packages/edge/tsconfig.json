@@ -2,8 +2,8 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     // Enable top-level await, and other modern ESM features.
-    "target": "ESNext",
-    "module": "ESNext",
+    "target": "ES2022",
+    "module": "ES2020",
     // Enable node-style module resolution, for things like npm package imports.
     "moduleResolution": "node",
     // Enable JSON imports.
@@ -13,12 +13,12 @@
     // Remove CJS module errors
     "allowSyntheticDefaultImports": true,
     // Allow importing `.ts` files directly
-    "allowImportingTsExtensions": true,
+    // "allowImportingTsExtensions": true,
     // Emit only declaration files
-    "emitDeclarationOnly": true,
+    // "emitDeclarationOnly": true,
     "declaration": true,
     "downlevelIteration": true,
     // Add support for Web Workers
-    "lib": ["ES2022", "DOM", "DOM.Iterable"]
+    "lib": ["ES2021", "DOM", "DOM.Iterable"]
   }
 }
