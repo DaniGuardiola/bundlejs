@@ -70,7 +70,7 @@
         "esbuild-wasm": "^0.17.19",
         "monaco-editor": "^0.38.0",
         "parse-package-name": "^1.0.0",
-        "preact": "^10.14.1",
+        "preact": "^10.15.0",
         "resolve.exports": "^2.0.2",
         "solid-js": "^1.7.5",
         "web-animations-js": "^2.3.2",
@@ -90,8 +90,8 @@
         "@types/d3-hierarchy": "^3.1.2",
         "@types/d3-scale": "^4.0.3",
         "@types/d3-shape": "^3.1.1",
-        "@types/node": "^20.2.1",
-        "@vercel/node": "^2.14.2",
+        "@types/node": "^20.2.3",
+        "@vercel/node": "^2.14.3",
         "autoprefixer": "^10.4.14",
         "browser-sync": "^2.29.3",
         "commitizen": "^4.3.0",
@@ -126,7 +126,7 @@
         "rehype-external-links": "^2.1.0",
         "rehype-highlight": "^6.0.0",
         "rehype-slug": "^5.1.0",
-        "rollup": "^3.22.0",
+        "rollup": "^3.23.0",
         "rollup-plugin-dts": "^5.3.0",
         "sass": "^1.62.1",
         "semantic-release": "^21.0.2",
@@ -136,7 +136,7 @@
         "tiny-glob": "^0.2.9",
         "typescript": "5.0.4",
         "ultrafetch": "^0.4.0",
-        "vercel": "^29.3.4",
+        "vercel": "^29.4.0",
         "workbox-build": "^6.5.4"
     }
 }

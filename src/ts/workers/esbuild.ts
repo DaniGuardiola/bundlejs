@@ -1,8 +1,8 @@
 /// <reference lib="webworker" />
 import type { BundleConfigOptions, CompressionOptions } from "../configs/bundle-options";
-import type { BuildResult, OutputFile, PartialMessage } from "esbuild-wasm";
+import { BuildResult, OutputFile, PartialMessage, transform } from "esbuild-wasm";
+import { TransformOptions } from "esbuild-wasm";
 
-import { FileSystem, setFile } from "../util/filesystem";
 import { initialize, build, formatMessages } from "esbuild-wasm";
 import { EventEmitter } from "@okikio/emitter";
 
@@ -26,6 +26,7 @@ import { DefaultConfig } from "../configs/bundle-options";
 import { ALIAS } from "../plugins/alias";
 import { getCDNUrl } from "../util/util-cdn";
 import { analyze } from "../plugins/analyzer";
+import { resetFileSystem, toArr } from "../util/filesystem";
 
 export let _initialized = false;
 export const initEvent = new EventEmitter();
@@ -165,11 +166,16 @@ export const start = async (port: MessagePort) => {
     };
 
     // Ensure a fresh filesystem on every run
-    FileSystem.clear();
+    // FileSystem.clear();
+    resetFileSystem({
+      [`/input.${config.tsx ? "tsx" : "ts"}`]: `${input}`,
+      ["/package.json"]: JSON.stringify(deepAssign({}, config["package.json"], {
+        // dependencies: Object.assign({}, )
+      }))
+    })
 
     try {
       // Catch esbuild errors 
-      setFile(`/input.${config.tsx ? "tsx" : "ts"}`, `${input}`);
       console.log({ esbuildOpts })
       
       try {
@@ -204,8 +210,43 @@ export const start = async (port: MessagePort) => {
           plugins: [
             ALIAS(config?.alias, origin, logger),
             EXTERNAL(esbuildOpts?.external, origin, config?.polyfill),
+            CDN(assets, origin, config["package.json"], logger, false),
             HTTP(assets, origin, logger),
-            CDN(origin, config["package.json"], logger),
+          ],
+          outdir: "/"
+        });
+
+        result = await build({
+          "stdin": {
+            // Ensure input is a string
+            contents: `${input}`,
+            loader: config.tsx ? "tsx" : "ts",
+            sourcefile: `/input.${config.tsx ? "tsx" : "ts"}`
+          },
+
+          ...esbuildOpts,
+
+          metafile: true,
+          write: false,
+          loader: {
+            '.png': 'file',
+            '.jpeg': 'file',
+            '.ttf': 'file',
+            '.svg': 'text',
+            '.html': 'text',
+            '.scss': 'css',
+            ...loader
+          },
+          define: {
+            "__NODE__": `false`,
+            "process.env.NODE_ENV": `"production"`,
+            ...define
+          },
+          plugins: [
+            ALIAS(config?.alias, origin, logger),
+            EXTERNAL(esbuildOpts?.external, origin, config?.polyfill),
+            CDN(assets, origin, config["package.json"], logger, true),
+            // HTTP(assets, origin, logger),
           ],
           outdir: "/"
         });
@@ -257,8 +298,28 @@ export const start = async (port: MessagePort) => {
           .concat(result?.outputFiles)
           ?.map(async ({ path, text, contents }) => {
             let ignoreFile = /\.(wasm|png|jpeg|webp)$/.test(path);
-            if (path == "/stdin.js") {
-              output = text;
+            let isOutputFile = path == "/stdin.js";
+            if (isOutputFile) {
+              let transformOpts: TransformOptions = {};
+              const transformOptKeys: Set<keyof TransformOptions> = new Set(["minify", "treeShaking", "define", "format", "banner", "charset", "drop", "globalName", "jsx", "jsxDev", "tsconfigRaw", "target", "tsconfigRaw", "supported", "sourceRoot", "sourcesContent", "sourcefile", "reserveProps", "mangleProps", "platform", "minifyWhitespace", "keepNames"]);
+              transformOptKeys.forEach(key => Object.assign(transformOpts, { [key]: esbuildOpts[key] }))
+              
+              output = (
+                await transform(text, {
+                  ...transformOpts,
+
+                  loader: config.tsx ? "tsx" : "ts",
+                  define: {
+                    "__NODE__": `false`,
+                    "process.env.NODE_ENV": `"production"`,
+                    ...define
+                  },
+                })
+              ).code;
+              console.log({
+                output,
+                transformOpts
+              })
               // config?.rollup && esbuildOpts?.treeShaking ? 
               // await treeshake(text, esbuildOpts, config?.rollup) :
             }
@@ -275,10 +336,16 @@ export const start = async (port: MessagePort) => {
               }
             }
 
-            return contents;
+            return isOutputFile ? encode(output) : contents;
           })
       );
+        
 
+      console.log("toArr ", 
+        toArr().map(([path, item]) => { 
+          return [path, { ...item, text_: decode(item.content_) }] 
+        })
+      )
       logger("Done ✨", "info");
 
       // Use multiple compression algorithims & pretty-bytes for the total gzip, brotli & lz4 compressed size
@@ -327,11 +394,11 @@ export const start = async (port: MessagePort) => {
           // A list of compressed input files and chunks, 
           // by default output files are already compressed but input files aren't so we need to manually transform them in order to ensure accuracy
           let inputFiles = [];
-          for (let [path, contents] of FileSystem.entries()) {
+          for (let [path, item] of toArr()) {
             // This minifies & compresses input files for a accurate view of what is eating up the most size
             // It uses the esbuild options to determine how it should minify input code
-            let text = decode(contents);
-            let code = text;
+            let text = decode(item.content_);
+            let buf = item.content_;
 
             /*  WIP  */
             // console.log(await Promise.resolve(path))
@@ -354,7 +421,7 @@ export const start = async (port: MessagePort) => {
             let ignoreFile = /\.(wasm|png|jpeg|webp)$/.test(path);
             logger(`Analyze ${path}${esbuildOpts?.logLevel == "verbose" && !ignoreFile ? "\n" + text : ""}`);
 
-            inputFiles.push({ path, contents: encode(code), text: code });
+            inputFiles.push({ path, contents: buf, text });
           }
 
           // console.log(inputFiles)
