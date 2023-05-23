@@ -389,7 +389,7 @@ export const CDN = (assets: OutputFile[] = [], cdn: string, pkgJSON: Partial<Pac
                   pkg = await res.json();
                   isDirPkgJSON = pkgMetadata.isDir ?? false;
 
-                  const pkgPath = "/node_modules" + new URL(res.url).pathname.replace("@" + pkg.version, "");
+                  const pkgPath = "/node_modules" + new URL(res.url).pathname;
                   if (!RESOLVED_URLs.has(url.href)) {
                     try {
                       setFileSystem({
@@ -498,9 +498,9 @@ export const CDN = (assets: OutputFile[] = [], cdn: string, pkgJSON: Partial<Pac
           // Some typescript files don't have file extensions but you can't fetch a file without their file extension
           // so bundle tries to solve for that
           let content: Uint8Array | undefined, urlStr: string, ext: string;
-          ({ content, url: urlStr, ext } = await determineExtension(url.toString(), false)); // , logger
+          ({ content, url: urlStr, ext } = await determineExtension(url.toString(), false, logger));
 
-          const filePath = NPM_CDN ? "/node_modules" + new URL(urlStr).pathname.replace(version, "") : "/node_modules/" + name + ext;
+          const filePath = NPM_CDN ? "/node_modules" + new URL(urlStr).pathname : "/node_modules/" + name + ext;
           if (content) {
             try {
               const priorArt = RESOLVED_URLs.has(argPath);
@@ -522,9 +522,8 @@ export const CDN = (assets: OutputFile[] = [], cdn: string, pkgJSON: Partial<Pac
           // Some typescript files don't have file extensions but you can't fetch a file without their file extension
           // so bundle tries to solve for that
           let content: Uint8Array | undefined, urlStr: string;
-          ({ content, url: urlStr } = await determineExtension(url.href, false)); // , logger
+          ({ content, url: urlStr } = await determineExtension(url.href, false, logger));
 
-          // const { name, path: _path } = parsePackageName(new URL(urlStr).pathname)
           const filePath = "/node_modules" + new URL(urlStr).pathname;
           if (content) {
             try {
