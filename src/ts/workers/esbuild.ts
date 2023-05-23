@@ -169,9 +169,7 @@ export const start = async (port: MessagePort) => {
     // FileSystem.clear();
     resetFileSystem({
       [`/input.${config.tsx ? "tsx" : "ts"}`]: `${input}`,
-      ["/package.json"]: JSON.stringify(deepAssign({}, config["package.json"], {
-        // dependencies: Object.assign({}, )
-      }))
+      ["/package.json"]: JSON.stringify(deepAssign({}, config["package.json"], {}))
     })
 
     try {
@@ -181,13 +179,16 @@ export const start = async (port: MessagePort) => {
       try {
         // Convert CDN values to URL origins
         let { origin } = !/:/.test(config?.cdn) ? getCDNUrl(config?.cdn + ":") : getCDNUrl(config?.cdn);
+        const RESOLVED_URLs = new Map<string, string>();
         result = await build({
           "stdin": {
             // Ensure input is a string
             contents: `${input}`,
             loader: config.tsx ? "tsx" : "ts",
-            sourcefile: `/input.${config.tsx ? "tsx" : "ts"}`
+            sourcefile: `/input.${config.tsx ? "tsx" : "ts"}`,
+            resolveDir: "/"
           },
+          // entryPoints: [`/input.${config.tsx ? "tsx" : "ts"}`],
 
           ...esbuildOpts,
 
@@ -210,19 +211,23 @@ export const start = async (port: MessagePort) => {
           plugins: [
             ALIAS(config?.alias, origin, logger),
             EXTERNAL(esbuildOpts?.external, origin, config?.polyfill),
-            CDN(assets, origin, config["package.json"], logger, false),
-            HTTP(assets, origin, logger),
+            CDN(assets, origin, config["package.json"], logger, RESOLVED_URLs),
+            // HTTP(assets, origin, logger),
           ],
           outdir: "/"
         });
 
+        console.log("RESOLVED_URLs ", RESOLVED_URLs)
+
         result = await build({
-          "stdin": {
-            // Ensure input is a string
-            contents: `${input}`,
-            loader: config.tsx ? "tsx" : "ts",
-            sourcefile: `/input.${config.tsx ? "tsx" : "ts"}`
-          },
+          // "stdin": {
+          //   // Ensure input is a string
+          //   contents: `${input}`,
+          //   loader: config.tsx ? "tsx" : "ts",
+          //   sourcefile: `/input.${config.tsx ? "tsx" : "ts"}`,
+          //   resolveDir: "/"
+          // },
+          entryPoints: [`/input.${config.tsx ? "tsx" : "ts"}`],
 
           ...esbuildOpts,
 
@@ -245,7 +250,7 @@ export const start = async (port: MessagePort) => {
           plugins: [
             ALIAS(config?.alias, origin, logger),
             EXTERNAL(esbuildOpts?.external, origin, config?.polyfill),
-            CDN(assets, origin, config["package.json"], logger, true),
+            CDN(assets, origin, config["package.json"], logger, RESOLVED_URLs),
             // HTTP(assets, origin, logger),
           ],
           outdir: "/"
